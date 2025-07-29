@@ -1,6 +1,5 @@
 package com.fashion_store.configuration;
 
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +21,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/**").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/**").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
                     .anyRequest().authenticated();
         });
         httpSecurity.csrf(AbstractHttpConfigurer::disable);

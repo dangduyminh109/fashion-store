@@ -8,13 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryResponse {
+public class CategoryTreeResponse {
     Long id;
     String name;
-    String slug;
-    Boolean status;
-    String image;
-    Long parentId;
-    String parentName;
-    Boolean isDeleted;
 }

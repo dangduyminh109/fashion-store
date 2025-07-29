@@ -11,10 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryRequest {
+public class BrandRequest {
     @NotBlank(message = "Tên danh mục không được để trống")
     String name;
     MultipartFile image;
-    Long parentId;
     Boolean status;
 }

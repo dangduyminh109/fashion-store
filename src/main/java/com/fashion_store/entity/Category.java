@@ -1,11 +1,12 @@
 package com.fashion_store.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
@@ -15,36 +16,37 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "categories")
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Category extends BaseModel {
     @Column(unique = true)
     String name;
-    String thumbnail;
+    String image;
     @Column(unique = true)
     String slug;
+    Boolean status;
+
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
     @JsonBackReference
     Category parent;
-    Boolean status;
 
-    Boolean isDeleted;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
-    LocalDateTime deletedAt;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    List<Category> children;
 
-    @PrePersist
-    public void prePersist() {
-        isDeleted = false;
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    List<Product> products;
 
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now();
+    @Override
+    public String toString() {
+        return String.format(
+                super.toString(),
+                "\nname: ", name,
+                "\nslug: ", slug,
+                "\nimage: ", image,
+                "\nstatus: ", status,
+                "\nparentID: ", parent.getId(),
+                "\nparentName: ", parent.getName()
+        );
     }
 }
