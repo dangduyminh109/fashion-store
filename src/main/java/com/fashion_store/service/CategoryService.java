@@ -131,11 +131,10 @@ public class CategoryService extends GenerateService<Category, Long> {
         return categoryMapper.toCategoryResponse(category);
     }
 
-
     public void status(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         try {
-            category.setStatus(!category.getStatus());
+            category.setStatus(category.getStatus() == null || !category.getStatus());
             categoryRepository.save(category);
         } catch (Exception e) {
             throw new AppException(ErrorCode.INTERNAL_EXCEPTION);

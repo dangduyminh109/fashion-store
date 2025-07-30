@@ -13,7 +13,12 @@ import org.springframework.http.HttpStatusCode;
 public enum ErrorCode {
     INTERNAL_EXCEPTION(99, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
     NOT_EXIST(11, "Not exist", HttpStatus.NOT_FOUND),
-    EXISTED(11, "Exited", HttpStatus.BAD_REQUEST);
+    EXISTED(12, "Exited", HttpStatus.BAD_REQUEST),
+    INVALID_KEY(13, "Invalid key", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_NAME(14, "Invalid name", HttpStatus.BAD_REQUEST),
+    INVALID_EMAIL(15, "Invalid email", HttpStatus.BAD_REQUEST),
+    INVALID_PHONE(16, "Invalid phone", HttpStatus.BAD_REQUEST);
+
 
     int code;
     String message;

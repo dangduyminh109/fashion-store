@@ -77,7 +77,7 @@ public class BrandService extends GenerateService<Brand, Long> {
     public void status(Long id) {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         try {
-            brand.setStatus(!brand.getStatus());
+            brand.setStatus(brand.getStatus() == null || !brand.getStatus());
             brandRepository.save(brand);
         } catch (Exception e) {
             throw new AppException(ErrorCode.INTERNAL_EXCEPTION);

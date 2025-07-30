@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BrandRequest {
-    @NotBlank(message = "Tên danh mục không được để trống")
+    @NotBlank(message = "INVALID_NAME")
     String name;
     MultipartFile image;
     Boolean status;

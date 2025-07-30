@@ -24,7 +24,6 @@ public class Category extends BaseModel {
     String slug;
     Boolean status;
 
-
     @ManyToOne
     @JoinColumn(name = "parent_id")
     @JsonBackReference
