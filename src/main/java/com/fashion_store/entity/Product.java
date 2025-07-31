@@ -16,12 +16,20 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product extends BaseModel {
     String name;
-    Double price;
     String description;
-    Boolean status;
+    Boolean hasVariants;
+    Double price;
+    Integer quantity;
+    String slug;
+
+    @Builder.Default
+    Boolean status = true;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ProductImage> listImage;
+    List<ProductImage> productImages;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Variant> variants;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -37,7 +45,10 @@ public class Product extends BaseModel {
                 super.toString(),
                 "\nname: ", name,
                 "\nprice: ", price,
-                "\nlistImage: ", listImage.stream().map(ProductImage::getUrl).collect(Collectors.joining(",")),
+                "\nquantity: ", quantity,
+                "\nhasVariants: ", hasVariants,
+                "\nslug: ", slug,
+                "\nproductImages: ", productImages.stream().map(ProductImage::getUrl).collect(Collectors.joining(",")),
                 "\nstatus: ", status,
                 "\ncategory : ", category.getName(),
                 "\nbrand: ", brand.getName()

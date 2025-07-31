@@ -16,7 +16,8 @@ public class Supplier extends BaseModel {
     String email;
     String phone;
     String address;
-    Boolean status;
+    @Builder.Default
+    Boolean status = true;
 
     @Override
     public String toString() {

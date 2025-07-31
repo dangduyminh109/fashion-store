@@ -22,7 +22,8 @@ public class Category extends BaseModel {
     String image;
     @Column(unique = true)
     String slug;
-    Boolean status;
+    @Builder.Default
+    Boolean status = true;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")

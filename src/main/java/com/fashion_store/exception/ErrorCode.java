@@ -17,7 +17,11 @@ public enum ErrorCode {
     INVALID_KEY(13, "Invalid key", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_NAME(14, "Invalid name", HttpStatus.BAD_REQUEST),
     INVALID_EMAIL(15, "Invalid email", HttpStatus.BAD_REQUEST),
-    INVALID_PHONE(16, "Invalid phone", HttpStatus.BAD_REQUEST);
+    INVALID_VALUE(16, "Invalid value", HttpStatus.BAD_REQUEST),
+    INVALID_SKU(17, "Sku must be at least 6 characters long", HttpStatus.BAD_REQUEST),
+    INVALID_TYPE(18, "Invalid display type", HttpStatus.BAD_REQUEST),
+    INVALID_PHONE(19, "Invalid phone", HttpStatus.BAD_REQUEST),
+    INVALID_ATTRIBUTE_COUNT(20, "Attribute must have at least one value", HttpStatus.BAD_REQUEST);
 
 
     int code;

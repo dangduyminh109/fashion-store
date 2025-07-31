@@ -1,6 +1,7 @@
 package com.fashion_store.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,9 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BrandRequest {
-    @NotBlank(message = "INVALID_NAME")
-    String name;
+public class AttributeValueRequest {
+    @NotBlank(message = "INVALID_VALUE")
+    String value;
+    @NotNull(message = "INVALID_VALUE")
+    Long AttributeId;
+    String color;
     MultipartFile image;
-    Boolean status;
 }

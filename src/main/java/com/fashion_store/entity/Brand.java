@@ -20,7 +20,8 @@ public class Brand extends BaseModel {
     String name;
     String image;
     String slug;
-    Boolean status;
+    @Builder.Default
+    Boolean status = true;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Product> products;

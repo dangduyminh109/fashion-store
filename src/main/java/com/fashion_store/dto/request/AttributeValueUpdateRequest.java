@@ -10,9 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BrandRequest {
-    @NotBlank(message = "INVALID_NAME")
-    String name;
+public class AttributeValueUpdateRequest {
+    @NotBlank(message = "INVALID_VALUE")
+    String value;
+    String color;
     MultipartFile image;
-    Boolean status;
 }
