@@ -10,9 +10,4 @@ public class PhoneValidator implements ConstraintValidator<PhoneConstraint, Stri
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
         return value == null || value.matches(PHONE_REGEX);
     }
-
-    @Override
-    public void initialize(PhoneConstraint constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
 }

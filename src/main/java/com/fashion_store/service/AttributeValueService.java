@@ -50,13 +50,13 @@ public class AttributeValueService extends GenerateService<AttributeValue, Long>
         attributeValue.setAttribute(parent);
 
         // handle image
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
+        if (!request.getImage().isEmpty()) {
             try {
                 String imageUrl = cloudinaryService.uploadFile(request.getImage());
                 attributeValue.setImage(imageUrl);
 
             } catch (IOException e) {
-                throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+                throw new AppException(ErrorCode.FILE_SAVE_FAILED);
             }
         } else {
             attributeValue.setImage("");
@@ -79,7 +79,6 @@ public class AttributeValueService extends GenerateService<AttributeValue, Long>
 
     public AttributeValueResponse update(AttributeValueUpdateRequest request, Long id) {
         AttributeValue attributeValue = attributeValueRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
-
         // nếu value thay đổi thì kiểm tra xem có trùng với value nào khác trong thuộc tính k
         if (!request.getValue().equals(attributeValue.getValue())) {
             Attribute parent = attributeRepository.findById(attributeValue.getAttribute().getId())
@@ -92,15 +91,18 @@ public class AttributeValueService extends GenerateService<AttributeValue, Long>
 
         attributeValueMapper.updateAttributeValue(attributeValue, request);
         // handle image
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
+        boolean imageDelete = request.getImageDelete() != null && request.getImageDelete();
+        if (!request.getImage().isEmpty()) {
             try {
                 String imageUrl = cloudinaryService.uploadFile(request.getImage());
                 // Lưu URL vào DB
                 attributeValue.setImage(imageUrl);
 
             } catch (IOException e) {
-                throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+                throw new AppException(ErrorCode.FILE_SAVE_FAILED);
             }
+        } else if (imageDelete) {
+            attributeValue.setImage("");
         }
 
         attributeValue = attributeValueRepository.save(attributeValue);

@@ -16,9 +16,9 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "attribute_values")
 public class AttributeValue extends BaseModel {
+    @Column(nullable = false)
     String value;
-    @Builder.Default
-    String color = "#ccc";
+    String color;
     String image;
 
     @ManyToOne

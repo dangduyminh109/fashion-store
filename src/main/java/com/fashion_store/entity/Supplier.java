@@ -1,5 +1,6 @@
 package com.fashion_store.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,12 +13,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Supplier extends BaseModel {
+    @Column(nullable = false)
     String name;
     String email;
     String phone;
     String address;
-    @Builder.Default
-    Boolean status = true;
+    Boolean status;
 
     @Override
     public String toString() {

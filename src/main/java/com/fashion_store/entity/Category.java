@@ -17,13 +17,13 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "categories")
 public class Category extends BaseModel {
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     String name;
     String image;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     String slug;
-    @Builder.Default
-    Boolean status = true;
+
+    Boolean status;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")

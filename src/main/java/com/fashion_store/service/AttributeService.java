@@ -1,7 +1,7 @@
 package com.fashion_store.service;
 
 import com.fashion_store.dto.request.AttributeRequest;
-import com.fashion_store.dto.request.ListAttributeValueRequest;
+import com.fashion_store.dto.component.AttributeValueItem;
 import com.fashion_store.dto.response.AttributeResponse;
 import com.fashion_store.entity.Attribute;
 import com.fashion_store.entity.AttributeValue;
@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class AttributeService extends GenerateService<Attribute, Long> {
     AttributeRepository attributeRepository;
     AttributeMapper attributeMapper;
     AttributeValueMapper attributeValueMapper;
-    AttributeValueRepository attributeValueRepository;
     CloudinaryService cloudinaryService;
 
     @Override
@@ -45,9 +43,11 @@ public class AttributeService extends GenerateService<Attribute, Long> {
     public AttributeResponse create(AttributeRequest request) {
         if (attributeRepository.existsByName(request.getName()))
             throw new AppException(ErrorCode.EXISTED);
+        if (request.getImage().size() != request.getListAttributeValue().size())
+            throw new AppException(ErrorCode.INVALID_FILE);
 
         request.setDisplayType(request.getDisplayType().toUpperCase().trim());
-        final Attribute attribute = attributeMapper.toAttribute(request);
+        Attribute attribute = attributeMapper.toAttribute(request);
         if (request.getDisplayType() == null) {
             attribute.setDisplayType(AttributeDisplayType.TEXT);
         } else {
@@ -56,22 +56,20 @@ public class AttributeService extends GenerateService<Attribute, Long> {
 
         List<AttributeValue> attributeValues = new ArrayList<>();
         for (int i = 0; i < request.getListAttributeValue().size(); i++) {
-            ListAttributeValueRequest attributeValue = request.getListAttributeValue().get(i);
-            AttributeValue attributeValueItem = attributeValueMapper.toAttributeValue(attributeValue);
+            AttributeValueItem item = request.getListAttributeValue().get(i);
+            AttributeValue attributeValueItem = attributeValueMapper.toAttributeValue(item);
             attributeValueItem.setAttribute(attribute);
-
             // handle image
-            if (request.getImage() != null && !request.getImage().isEmpty() && i < request.getImage().size()) {
-                MultipartFile img = request.getImage().get(i);
-                if (img != null && !img.isEmpty()) {
-                    try {
-                        String imageUrl = cloudinaryService.uploadFile(request.getImage().get(i));
-                        // Lưu URL vào DB
-                        attributeValueItem.setImage(imageUrl);
-                    } catch (IOException e) {
-                        throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
-                    }
+            if (!request.getImage().get(i).isEmpty()) {
+                try {
+                    String imageUrl = cloudinaryService.uploadFile(request.getImage().get(i));
+                    // Lưu URL vào DB
+                    attributeValueItem.setImage(imageUrl);
+                } catch (IOException e) {
+                    throw new AppException(ErrorCode.FILE_SAVE_FAILED);
                 }
+            } else {
+                attributeValueItem.setImage("");
             }
             attributeValues.add(attributeValueItem);
         }
@@ -115,6 +113,9 @@ public class AttributeService extends GenerateService<Attribute, Long> {
     public AttributeResponse update(AttributeRequest request, Long id) {
         if (attributeRepository.existsByNameAndIdNot(request.getName(), id))
             throw new AppException(ErrorCode.EXISTED);
+        if (request.getImage().size() != request.getListAttributeValue().size())
+            throw new AppException(ErrorCode.INVALID_FILE);
+
         Attribute attribute = attributeRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         Map<Long, AttributeValue> attributeValueOld;
         if (attribute.getAttributeValues() != null && !attribute.getAttributeValues().isEmpty()) {
@@ -131,26 +132,24 @@ public class AttributeService extends GenerateService<Attribute, Long> {
         }
         attributeMapper.updateAttribute(attribute, request);
 
-
         // cập nhật list attribute value
         List<AttributeValue> newAttributeValues = new ArrayList<>();
         for (int i = 0; i < request.getListAttributeValue().size(); i++) {
-            ListAttributeValueRequest item = request.getListAttributeValue().get(i);
+            AttributeValueItem item = request.getListAttributeValue().get(i);
             AttributeValue attributeValue = attributeValueMapper.toAttributeValue(item);
             if (item.getId() == null) {
                 attributeValue.setAttribute(attribute);
                 // handle image
-                if (request.getImage() != null && !request.getImage().isEmpty() && i < request.getImage().size()) {
-                    MultipartFile img = request.getImage().get(i);
-                    if (img != null && !img.isEmpty()) {
-                        try {
-                            String imageUrl = cloudinaryService.uploadFile(request.getImage().get(i));
-                            // Lưu URL vào DB
-                            attributeValue.setImage(imageUrl);
-                        } catch (IOException e) {
-                            throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
-                        }
+                if (!request.getImage().get(i).isEmpty()) {
+                    try {
+                        String imageUrl = cloudinaryService.uploadFile(request.getImage().get(i));
+                        // Lưu URL vào DB
+                        attributeValue.setImage(imageUrl);
+                    } catch (IOException e) {
+                        throw new AppException(ErrorCode.FILE_SAVE_FAILED);
                     }
+                } else {
+                    attributeValue.setImage("");
                 }
                 newAttributeValues.add(attributeValue);
 
@@ -158,17 +157,17 @@ public class AttributeService extends GenerateService<Attribute, Long> {
                 AttributeValue updateItem = attributeValueOld.get(item.getId());
                 attributeValueMapper.updateAttributeValue(updateItem, item);
                 // handle image
-                if (request.getImage() != null && !request.getImage().isEmpty() && i < request.getImage().size()) {
-                    MultipartFile img = request.getImage().get(i);
-                    if (img != null && !img.isEmpty()) {
-                        try {
-                            String imageUrl = cloudinaryService.uploadFile(request.getImage().get(i));
-                            // Lưu URL vào DB
-                            updateItem.setImage(imageUrl);
-                        } catch (IOException e) {
-                            throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
-                        }
+                boolean imageDelete = item.getImageDelete() != null && item.getImageDelete();
+                if (!request.getImage().get(i).isEmpty()) {
+                    try {
+                        String imageUrl = cloudinaryService.uploadFile(request.getImage().get(i));
+                        // Lưu URL vào DB
+                        updateItem.setImage(imageUrl);
+                    } catch (IOException e) {
+                        throw new AppException(ErrorCode.FILE_SAVE_FAILED);
                     }
+                } else if (imageDelete) {
+                    updateItem.setImage("");
                 }
                 // trường hợp listAttributeValue có id trùng với id trước đó, xóa bỏ item cập nhật trước đó khỏi danh sách.
                 //                "listAttributeValue":

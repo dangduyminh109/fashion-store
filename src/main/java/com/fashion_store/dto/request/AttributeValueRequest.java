@@ -16,6 +16,8 @@ public class AttributeValueRequest {
     String value;
     @NotNull(message = "INVALID_VALUE")
     Long AttributeId;
-    String color;
+    @Builder.Default
+    String color = "#ccc";
+    @NotNull(message = "INVALID_FILE")
     MultipartFile image;
 }

@@ -11,17 +11,17 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
+    Long id;
     String name;
     String description;
     Boolean status;
-    Double price;
-    Integer quantity;
-    Boolean hasVariants;
+    Boolean isFeatured;
     Boolean isDeleted;
     Long brandId;
     String brandName;
     Long categoryId;
-    Long categoryName;
+    String categoryName;
     String slug;
-    List<VariantResponse> variantResponses;
+    List<VariantResponse> variants;
+    List<String> productImages;
 }

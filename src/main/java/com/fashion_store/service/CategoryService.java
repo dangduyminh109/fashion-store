@@ -46,13 +46,13 @@ public class CategoryService extends GenerateService<Category, Long> {
         }
 
         // handle image
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
+        if (!request.getImage().isEmpty()) {
             try {
                 String imageUrl = cloudinaryService.uploadFile(request.getImage());
                 category.setImage(imageUrl);
 
             } catch (IOException e) {
-                throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+                throw new AppException(ErrorCode.FILE_SAVE_FAILED);
             }
         } else {
             category.setImage("");
@@ -69,7 +69,6 @@ public class CategoryService extends GenerateService<Category, Long> {
 
         category = categoryRepository.save(category);
         return categoryMapper.toCategoryResponse(category);
-
     }
 
     public List<CategoryResponse> getAll() {
@@ -106,15 +105,17 @@ public class CategoryService extends GenerateService<Category, Long> {
             category.setParent(parent);
         }
         // handle image
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
+        boolean imageDelete = request.getImageDelete() != null && request.getImageDelete();
+        if (!request.getImage().isEmpty()) {
             try {
                 String imageUrl = cloudinaryService.uploadFile(request.getImage());
                 // Lưu URL vào DB
                 category.setImage(imageUrl);
-
             } catch (IOException e) {
-                throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+                throw new AppException(ErrorCode.FILE_SAVE_FAILED);
             }
+        } else if (imageDelete) {
+            category.setImage("");
         }
 
         // slug

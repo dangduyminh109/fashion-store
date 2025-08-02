@@ -1,6 +1,7 @@
 package com.fashion_store.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class BrandRequest {
     @NotBlank(message = "INVALID_NAME")
     String name;
+    @Builder.Default
+    Boolean status = true;
+    @NotNull(message = "INVALID_FILE")
     MultipartFile image;
-    Boolean status;
+    @Builder.Default
+    Boolean imageDelete = false;
 }

@@ -37,13 +37,13 @@ public class BrandService extends GenerateService<Brand, Long> {
         Brand brand = brandMapper.toBrand(request);
 
         // handle image
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
+        if (!request.getImage().isEmpty()) {
             try {
                 String imageUrl = cloudinaryService.uploadFile(request.getImage());
                 brand.setImage(imageUrl);
 
             } catch (IOException e) {
-                throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+                throw new AppException(ErrorCode.FILE_SAVE_FAILED);
             }
         } else {
             brand.setImage("");
@@ -87,20 +87,24 @@ public class BrandService extends GenerateService<Brand, Long> {
     public BrandResponse update(BrandRequest request, Long id) {
         if (brandRepository.existsByNameAndIdNot(request.getName(), id))
             throw new AppException(ErrorCode.EXISTED);
+
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         brandMapper.updateBrand(brand, request);
 
         // handle image
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
+        boolean imageDelete = request.getImageDelete() != null && request.getImageDelete();
+        if (!request.getImage().isEmpty()) {
             try {
                 String imageUrl = cloudinaryService.uploadFile(request.getImage());
                 // Lưu URL vào DB
                 brand.setImage(imageUrl);
-
             } catch (IOException e) {
-                throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+                throw new AppException(ErrorCode.FILE_SAVE_FAILED);
             }
+        } else if (imageDelete) {
+            brand.setImage("");
         }
+
 
         // slug
         String baseSlug = GenerateSlugUtils.generateSlug(brand.getName());

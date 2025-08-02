@@ -19,5 +19,6 @@ public class SupplierRequest {
     @PhoneConstraint(message = "INVALID_PHONE")
     String phone;
     String address;
-    Boolean status;
+    @Builder.Default
+    Boolean status = true;
 }

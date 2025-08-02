@@ -15,15 +15,19 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product extends BaseModel {
+    @Column(nullable = false)
     String name;
+
     String description;
-    Boolean hasVariants;
-    Double price;
-    Integer quantity;
+
+    @Column(nullable = false, unique = true)
     String slug;
 
-    @Builder.Default
-    Boolean status = true;
+    Boolean status;
+
+    Boolean isFeatured;
+
+    Long position;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProductImage> productImages;
@@ -44,9 +48,6 @@ public class Product extends BaseModel {
         return String.format(
                 super.toString(),
                 "\nname: ", name,
-                "\nprice: ", price,
-                "\nquantity: ", quantity,
-                "\nhasVariants: ", hasVariants,
                 "\nslug: ", slug,
                 "\nproductImages: ", productImages.stream().map(ProductImage::getUrl).collect(Collectors.joining(",")),
                 "\nstatus: ", status,

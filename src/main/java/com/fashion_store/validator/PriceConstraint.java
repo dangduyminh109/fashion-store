@@ -5,12 +5,12 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
-@Target(ElementType.FIELD)
 @Documented
+@Constraint(validatedBy = PriceValidator.class)
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {PhoneValidator.class})
-public @interface PhoneConstraint {
-    String message() default "INVALID_PHONE";
+public @interface PriceConstraint {
+    String message() default "INVALID_PRICE";
 
     Class<?>[] groups() default {};
 

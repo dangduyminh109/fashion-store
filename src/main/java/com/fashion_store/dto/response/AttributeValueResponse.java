@@ -14,4 +14,5 @@ public class AttributeValueResponse {
     String color;
     String image;
     Long attributeId;
+    String attributeName;
 }

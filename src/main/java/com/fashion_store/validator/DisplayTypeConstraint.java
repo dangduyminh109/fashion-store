@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {DisplayTypeValidator.class})
 public @interface DisplayTypeConstraint {
-    String message() default "Invalid display type";
+    String message() default "INVALID_TYPE";
 
     Class<?>[] groups() default {};
 

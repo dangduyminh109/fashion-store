@@ -16,10 +16,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "attributes")
 public class Attribute extends BaseModel {
+    @Column(nullable = false)
     String name;
 
-    @Builder.Default
-    AttributeDisplayType displayType = AttributeDisplayType.TEXT;
+    AttributeDisplayType displayType;
 
     @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, orphanRemoval = true)
     List<AttributeValue> attributeValues;

@@ -5,12 +5,12 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
-@Target(ElementType.FIELD)
 @Documented
+@Constraint(validatedBy = VariantListValidator.class)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {PhoneValidator.class})
-public @interface PhoneConstraint {
-    String message() default "INVALID_PHONE";
+public @interface VariantListConstraint {
+    String message() default "INVALID_ATTRIBUTE_COUNT";
 
     Class<?>[] groups() default {};
 

@@ -3,6 +3,8 @@ package com.fashion_store.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -11,8 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class VariantResponse {
+    Long id;
     String sku;
-    Double price;
-    Integer quantity;
-    List<AttributeResponse> attributeResponses;
+    Boolean status;
+    Integer inventory;
+    BigDecimal salePrice;
+    BigDecimal originalPrice;
+    BigDecimal promotionalPrice;
+    LocalDateTime promotionEndTime;
+    LocalDateTime promotionStartTime;
+    List<AttributeValueResponse> attributeValues;
 }

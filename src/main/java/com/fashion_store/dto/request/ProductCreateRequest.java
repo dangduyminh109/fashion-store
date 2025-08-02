@@ -1,7 +1,6 @@
 package com.fashion_store.dto.request;
 
-import com.fashion_store.dto.component.AttributeValueItem;
-import com.fashion_store.validator.DisplayTypeConstraint;
+import com.fashion_store.validator.VariantListConstraint;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,19 +16,27 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AttributeRequest {
+public class ProductCreateRequest {
     @NotBlank(message = "INVALID_NAME")
     String name;
 
-    @DisplayTypeConstraint(message = "INVALID_TYPE")
     @Builder.Default
-    String displayType = "text";
+    String description = "";
+
+    @Builder.Default
+    Boolean status = true;
+    @Builder.Default
+    Boolean isFeatured = true;
+
+    Long brandId;
+    Long categoryId;
+
+    @NotNull(message = "INVALID_VARIANT")
+    @Size(min = 1, message = "INVALID_VARIANT")
+    @VariantListConstraint(message = "INVALID_ATTRIBUTE_COUNT")
+    @Valid
+    List<VariantCreateRequest> variantList;
 
     @NotNull(message = "INVALID_FILE")
-    List<MultipartFile> image;
-
-    @Size(min = 1, message = "INVALID_ATTRIBUTE_COUNT")
-    @NotNull(message = "INVALID_ATTRIBUTE_COUNT")
-    @Valid
-    List<AttributeValueItem> listAttributeValue;
+    List<MultipartFile> images;
 }

@@ -17,9 +17,4 @@ public class DisplayTypeValidator implements ConstraintValidator<DisplayTypeCons
             return false;
         }
     }
-
-    @Override
-    public void initialize(DisplayTypeConstraint constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
 }
