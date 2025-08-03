@@ -53,6 +53,8 @@ public class GlobalExceptionHandler {
                     errorCode = ErrorCode.INVALID_VARIANT_LIST;
                 } else if (fieldName.contains("image")) {
                     errorCode = ErrorCode.INVALID_FILE;
+                } else {
+                    errorCode = ErrorCode.INVALID_TYPE_DATA;
                 }
             } else {
                 try {
@@ -63,6 +65,16 @@ public class GlobalExceptionHandler {
                 }
             }
             break;
+        }
+
+        if (e.getBindingResult().getFieldErrors().isEmpty() && !e.getBindingResult().getGlobalErrors().isEmpty()) {
+            String defaultMessage = e.getBindingResult().getGlobalErrors().get(0).getDefaultMessage();
+            try {
+                errorCode = ErrorCode.valueOf(defaultMessage);
+            } catch (IllegalArgumentException ex) {
+                log.error("Global ErrorCode {} does not exist in enum\n{}", defaultMessage, ex.getMessage());
+                errorCode = ErrorCode.INVALID_KEY;
+            }
         }
 
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(

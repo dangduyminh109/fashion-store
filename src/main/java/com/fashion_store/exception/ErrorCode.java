@@ -41,6 +41,12 @@ public enum ErrorCode {
     INVALID_QUANTITY(40, "Quantity must be greater than 0.", HttpStatus.BAD_REQUEST),
     INVALID_VARIANT_ID(41, "Invalid variant id.", HttpStatus.BAD_REQUEST),
     INVALID_IMPORT_PRICE(42, "Invalid import price.", HttpStatus.BAD_REQUEST),
+    INVALID_CODE(43, "Invalid code.", HttpStatus.BAD_REQUEST),
+    INVALID_VOUCHER_TIME(44, "Invalid voucher time.", HttpStatus.BAD_REQUEST),
+    INVALID_VOUCHER_DISCOUNT(45, "Invalid voucher discount.", HttpStatus.BAD_REQUEST),
+    INVALID_ORDER_VALUE(46, "Invalid min order value.", HttpStatus.BAD_REQUEST),
+    INVALID_VOUCHER_TYPE(47, "Invalid voucher type.", HttpStatus.BAD_REQUEST),
+    INVALID_TYPE_DATA(48, "Invalid type data", HttpStatus.BAD_REQUEST),
     INVALID_ATTRIBUTE_COUNT(20, "Attribute must have at least one value", HttpStatus.BAD_REQUEST);
 
 
