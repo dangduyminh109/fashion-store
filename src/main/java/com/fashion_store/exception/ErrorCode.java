@@ -37,6 +37,10 @@ public enum ErrorCode {
     INVALID_VARIANT_LIST(36, "Invalid variant data.", HttpStatus.BAD_REQUEST),
     INVALID_CONTENT(37, "Content cannot be blank.", HttpStatus.BAD_REQUEST),
     INVALID_TITLE(38, "Invalid title", HttpStatus.BAD_REQUEST),
+    INVALID_LIST_IMPORT_ITEM(39, "The import item list must have at least 1 item.", HttpStatus.BAD_REQUEST),
+    INVALID_QUANTITY(40, "Quantity must be greater than 0.", HttpStatus.BAD_REQUEST),
+    INVALID_VARIANT_ID(41, "Invalid variant id.", HttpStatus.BAD_REQUEST),
+    INVALID_IMPORT_PRICE(42, "Invalid import price.", HttpStatus.BAD_REQUEST),
     INVALID_ATTRIBUTE_COUNT(20, "Attribute must have at least one value", HttpStatus.BAD_REQUEST);
 
 

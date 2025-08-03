@@ -1,10 +1,10 @@
 package com.fashion_store.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,6 +21,9 @@ public class Supplier extends BaseModel {
     String phone;
     String address;
     Boolean status;
+
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    List<ImportReceipt> importReceipts;
 
     @Override
     public String toString() {
