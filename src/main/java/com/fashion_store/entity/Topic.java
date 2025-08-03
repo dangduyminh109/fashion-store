@@ -1,35 +1,35 @@
 package com.fashion_store.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Entity
+@Builder
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "suppliers")
-public class Supplier extends BaseModel {
-    @Column(nullable = false)
+@Table(name = "topics")
+public class Topic extends BaseModel {
+    @Column(nullable = false, unique = true)
     String name;
-    String email;
-    String phone;
-    String address;
+    @Column(nullable = false, unique = true)
+    String slug;
     Boolean status;
+
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+    List<Post> posts;
 
     @Override
     public String toString() {
         return String.format(
                 super.toString(),
                 "\nname: ", name,
-                "\nemail: ", email,
-                "\nphone: ", phone,
-                "\naddress: ", address,
+                "\nslug: ", slug,
                 "\nstatus: ", status
         );
     }

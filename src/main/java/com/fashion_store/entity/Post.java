@@ -1,39 +1,37 @@
 package com.fashion_store.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Entity
-@Builder
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "brands")
-public class Brand extends BaseModel {
-    @Column(nullable = false, unique = true)
-    String name;
+@Table(name = "posts")
+public class Post extends BaseModel {
+    @Column(nullable = false)
+    String title;
+    @Column(nullable = false)
+    String content;
     String image;
     @Column(nullable = false, unique = true)
     String slug;
     Boolean status;
-
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "topic_id")
+    Topic topic;
 
     @Override
     public String toString() {
         return String.format(
                 super.toString(),
-                "\nname: ", name,
-                "\nslug: ", slug,
-                "\nimage: ", image,
-                "\nstatus: ", status
+                "\ntitle: ", title,
+                "\ncontent: ", content,
+                "\nimage: ", image
         );
     }
 }

@@ -38,7 +38,7 @@ public class CategoryController {
     @PostMapping("/create")
     public ApiResponse<CategoryResponse> create(@ModelAttribute @Valid CategoryRequest request) {
         return ApiResponse.<CategoryResponse>builder()
-                .message("Tạo thương hiệu thành công")
+                .message("Tạo danh mục thành công")
                 .result(categoryService.create(request))
                 .build();
     }

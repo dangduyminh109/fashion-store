@@ -34,7 +34,9 @@ public enum ErrorCode {
     INVALID_PROMOTION_END_TIME(34, "Invalid format time", HttpStatus.BAD_REQUEST),
     INVALID_ATTRIBUTE_VALUE(34, "There must be at least 1 value attribute in the variable.", HttpStatus.BAD_REQUEST),
     VARIANT_ID_MISMATCH(35, "The variant ID does not match the list to update.", HttpStatus.BAD_REQUEST),
-    INVALID_VARIANT_LIST(35, "Invalid variant data.", HttpStatus.BAD_REQUEST),
+    INVALID_VARIANT_LIST(36, "Invalid variant data.", HttpStatus.BAD_REQUEST),
+    INVALID_CONTENT(37, "Content cannot be blank.", HttpStatus.BAD_REQUEST),
+    INVALID_TITLE(38, "Invalid title", HttpStatus.BAD_REQUEST),
     INVALID_ATTRIBUTE_COUNT(20, "Attribute must have at least one value", HttpStatus.BAD_REQUEST);
 
 

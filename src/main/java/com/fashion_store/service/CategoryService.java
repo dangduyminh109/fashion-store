@@ -84,12 +84,12 @@ public class CategoryService extends GenerateService<Category, Long> {
     }
 
     public CategoryResponse update(CategoryRequest request, Long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         if (categoryRepository.existsByNameAndIdNot(request.getName(), id))
             throw new AppException(ErrorCode.EXISTED);
         if (request.getParentId() != null && request.getParentId().equals(id))
             throw new AppException(ErrorCode.EXISTED);
 
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         categoryMapper.updateCategory(category, request);
 
         if (request.getParentId() != null) {

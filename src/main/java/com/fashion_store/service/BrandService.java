@@ -85,10 +85,10 @@ public class BrandService extends GenerateService<Brand, Long> {
     }
 
     public BrandResponse update(BrandRequest request, Long id) {
+        Brand brand = brandRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         if (brandRepository.existsByNameAndIdNot(request.getName(), id))
             throw new AppException(ErrorCode.EXISTED);
 
-        Brand brand = brandRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         brandMapper.updateBrand(brand, request);
 
         // handle image

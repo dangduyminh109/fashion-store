@@ -51,6 +51,8 @@ public class GlobalExceptionHandler {
                     errorCode = ErrorCode.INVALID_PROMOTION_END_TIME;
                 } else if (fieldName.contains("variantList")) {
                     errorCode = ErrorCode.INVALID_VARIANT_LIST;
+                } else if (fieldName.contains("image")) {
+                    errorCode = ErrorCode.INVALID_FILE;
                 }
             } else {
                 try {

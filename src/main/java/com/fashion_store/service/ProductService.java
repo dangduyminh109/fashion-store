@@ -298,4 +298,14 @@ public class ProductService extends GenerateService<Product, Long> {
             throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
         }
     }
+
+    public void featured(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+        try {
+            product.setIsFeatured(product.getStatus() == null || !product.getIsFeatured());
+            productRepository.save(product);
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+        }
+    }
 }

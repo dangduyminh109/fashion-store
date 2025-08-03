@@ -26,7 +26,7 @@ public class ProductCreateRequest {
     @Builder.Default
     Boolean status = true;
     @Builder.Default
-    Boolean isFeatured = true;
+    Boolean isFeatured = false;
 
     Long brandId;
     Long categoryId;

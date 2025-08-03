@@ -58,6 +58,14 @@ public class ProductController {
                 .build();
     }
 
+    @PatchMapping("/featured/{id}")
+    public ApiResponse<Void> featured(@PathVariable Long id) {
+        productService.featured(id);
+        return ApiResponse.<Void>builder()
+                .message("Cập nhật sản phẩm nổi bật thành công")
+                .build();
+    }
+
     @PatchMapping("/status/{id}")
     public ApiResponse<Void> status(@PathVariable Long id) {
         productService.status(id);

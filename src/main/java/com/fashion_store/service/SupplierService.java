@@ -50,9 +50,9 @@ public class SupplierService extends GenerateService<Supplier, Long> {
     }
 
     public SupplierResponse update(SupplierRequest request, Long id) {
+        Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         if (supplierRepository.existsByNameAndIdNot(request.getName(), id))
             throw new AppException(ErrorCode.EXISTED);
-        Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         supplierMapper.updateSupplier(supplier, request);
 
         supplier = supplierRepository.save(supplier);

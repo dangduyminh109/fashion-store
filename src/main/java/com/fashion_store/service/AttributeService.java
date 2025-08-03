@@ -111,12 +111,12 @@ public class AttributeService extends GenerateService<Attribute, Long> {
     }
 
     public AttributeResponse update(AttributeRequest request, Long id) {
+        Attribute attribute = attributeRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         if (attributeRepository.existsByNameAndIdNot(request.getName(), id))
             throw new AppException(ErrorCode.EXISTED);
         if (request.getImage().size() != request.getListAttributeValue().size())
             throw new AppException(ErrorCode.INVALID_FILE);
 
-        Attribute attribute = attributeRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         Map<Long, AttributeValue> attributeValueOld;
         if (attribute.getAttributeValues() != null && !attribute.getAttributeValues().isEmpty()) {
             attributeValueOld = attribute.getAttributeValues().stream()
