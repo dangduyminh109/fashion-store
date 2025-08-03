@@ -36,13 +36,8 @@ public class VoucherService extends GenerateService<Voucher, Long> {
         if (voucherRepository.existsByCode(request.getCode()))
             throw new AppException(ErrorCode.EXISTED);
         request.setDiscountType(request.getDiscountType().toUpperCase().trim());
-
         Voucher voucher = voucherMapper.toVoucher(request);
-        if (request.getDiscountType() == null) {
-            voucher.setDiscountType(DiscountType.AMOUNT);
-        } else {
-            voucher.setDiscountType(DiscountType.valueOf(request.getDiscountType()));
-        }
+
         voucher.setUsed(0);
         voucher = voucherRepository.save(voucher);
         return voucherMapper.toVoucherResponse(voucher);
@@ -66,13 +61,12 @@ public class VoucherService extends GenerateService<Voucher, Long> {
             throw new AppException(ErrorCode.EXISTED);
         if (voucherRepository.existsByCodeAndIdNot(request.getName(), id))
             throw new AppException(ErrorCode.EXISTED);
-        voucherMapper.updateVoucher(voucher, request);
-        if (request.getDiscountType() == null) {
-            voucher.setDiscountType(DiscountType.AMOUNT);
-        } else {
+
+        if (request.getDiscountType() != null) {
             request.setDiscountType(request.getDiscountType().toUpperCase().trim());
-            voucher.setDiscountType(DiscountType.valueOf(request.getDiscountType()));
         }
+        voucherMapper.updateVoucher(voucher, request);
+
         voucher = voucherRepository.save(voucher);
         return voucherMapper.toVoucherResponse(voucher);
     }

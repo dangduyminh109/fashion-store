@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleInvalidFormat(HttpMessageNotReadableException ex) {
-        ErrorCode errorCode = ErrorCode.INVALID_FORMAT_TIME;
+        ErrorCode errorCode = ErrorCode.INVALID_FORM_FORMAT;
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
                 ApiResponse.<Void>builder()
                         .code(errorCode.getCode())

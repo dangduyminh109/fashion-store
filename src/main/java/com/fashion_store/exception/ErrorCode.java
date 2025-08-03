@@ -29,7 +29,7 @@ public enum ErrorCode {
     INVALID_PROMOTIONAL_PRICE(32, "Promotional price must be greater than 0", HttpStatus.BAD_REQUEST),
     INVALID_PROMOTION_TIME(33, "Invalid promotion time", HttpStatus.BAD_REQUEST),
     INVALID_VARIANT(33, "At least one variant is required", HttpStatus.BAD_REQUEST),
-    INVALID_FORMAT_TIME(34, "Invalid format time", HttpStatus.BAD_REQUEST),
+    INVALID_FORM_FORMAT(34, "Invalid format value", HttpStatus.BAD_REQUEST),
     INVALID_PROMOTION_START_TIME(34, "Invalid format time", HttpStatus.BAD_REQUEST),
     INVALID_PROMOTION_END_TIME(34, "Invalid format time", HttpStatus.BAD_REQUEST),
     INVALID_ATTRIBUTE_VALUE(34, "There must be at least 1 value attribute in the variable.", HttpStatus.BAD_REQUEST),
@@ -47,7 +47,15 @@ public enum ErrorCode {
     INVALID_ORDER_VALUE(46, "Invalid min order value.", HttpStatus.BAD_REQUEST),
     INVALID_VOUCHER_TYPE(47, "Invalid voucher type.", HttpStatus.BAD_REQUEST),
     INVALID_TYPE_DATA(48, "Invalid type data", HttpStatus.BAD_REQUEST),
-    INVALID_ATTRIBUTE_COUNT(20, "Attribute must have at least one value", HttpStatus.BAD_REQUEST);
+    INVALID_ATTRIBUTE_COUNT(20, "Attribute must have at least one value", HttpStatus.BAD_REQUEST),
+    INVALID_CUSTOMER_ID(49, "Invalid customer ID.", HttpStatus.BAD_REQUEST),
+    INVALID_CUSTOMER_NAME(50, "Invalid customer name.", HttpStatus.BAD_REQUEST),
+    INVALID_ADDRESS(51, "Invalid address.", HttpStatus.BAD_REQUEST),
+    INVALID_ADDRESS_PHONE(52, "Invalid phone number in address.", HttpStatus.BAD_REQUEST),
+    INVALID_CITY(53, "Invalid city.", HttpStatus.BAD_REQUEST),
+    INVALID_DISTRICT(54, "Invalid district.", HttpStatus.BAD_REQUEST),
+    INVALID_AUTH_PROVIDER(56, "Invalid auth provider.", HttpStatus.BAD_REQUEST),
+    INVALID_WARD(55, "Invalid ward.", HttpStatus.BAD_REQUEST);
 
 
     int code;

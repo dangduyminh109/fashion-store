@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ImportItemPriceConstraint(message = "INVALID_IMPORT_PRICE")
 public class ImportItemResponse {
     Long id;
     Integer quantity = 1;
