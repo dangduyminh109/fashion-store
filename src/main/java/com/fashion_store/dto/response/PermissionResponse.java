@@ -8,14 +8,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AddressResponse {
-    Long id;
-    String customerId;
+public class PermissionResponse {
     String name;
-    String address;
-    String phone;
-    String city;
-    String district;
-    String ward;
-    Boolean isDefault;
+    String code;
+    String module;
 }

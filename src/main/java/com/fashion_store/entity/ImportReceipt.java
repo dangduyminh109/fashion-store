@@ -11,7 +11,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import jakarta.persistence.*;
 
-
 @Entity
 @Getter
 @Setter
@@ -21,6 +20,9 @@ import jakarta.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "import_receipts")
 public class ImportReceipt extends BaseModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     String note;
     LocalDateTime importDate;
 

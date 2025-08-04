@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerResponse {
-    Long id;
+    String id;
     String fullName;
     String email;
     String phone;

@@ -17,6 +17,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "customers")
 public class Customer extends BaseModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+
     @Column(nullable = false)
     String fullName;
     @Column(unique = true)

@@ -5,16 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
+public interface CustomerRepository extends JpaRepository<Customer, String> {
     boolean existsByFullName(String value);
 
     boolean existsByEmail(String value);
 
     boolean existsByPhone(String value);
 
-    boolean existsByFullNameAndIdNot(String value, Long id);
+    boolean existsByFullNameAndIdNot(String value, String id);
 
-    boolean existsByEmailAndIdNot(String value, Long id);
+    boolean existsByEmailAndIdNot(String value, String id);
 
-    boolean existsByPhoneAndIdNot(String value, Long id);
+    boolean existsByPhoneAndIdNot(String value, String id);
 }

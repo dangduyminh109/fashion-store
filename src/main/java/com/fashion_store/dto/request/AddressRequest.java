@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressRequest {
     @NotNull(message = "INVALID_CUSTOMER_ID")
-    Long customerId;
+    String customerId;
     @NotBlank(message = "INVALID_NAME")
     String name;
     @NotBlank(message = "INVALID_ADDRESS")

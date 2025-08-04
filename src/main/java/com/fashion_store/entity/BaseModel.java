@@ -13,10 +13,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class BaseModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
     Boolean isDeleted;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
@@ -39,7 +35,6 @@ public abstract class BaseModel {
     @Override
     public String toString() {
         return String.format(
-                "Id: ", id,
                 "\nisDeleted: ", isDeleted,
                 "\ncreatedAt: ", createdAt,
                 "\nupdatedAt: ", updatedAt

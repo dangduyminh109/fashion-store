@@ -149,7 +149,7 @@ public class ProductService extends GenerateService<Product, Long> {
                 .toList();
 
         // kiểm tra nếu có id thì id đó phải thuộc danh sách id củ mới cho cập nhật
-        List<Long> oldVariantIds = oldProduct.getVariants().stream().map(BaseModel::getId).toList();
+        List<Long> oldVariantIds = oldProduct.getVariants().stream().map(Variant::getId).toList();
         listVariantIdRequest.forEach(idVariantUpdate -> {
             if (!oldVariantIds.contains(idVariantUpdate))
                 throw new AppException(ErrorCode.VARIANT_ID_MISMATCH);

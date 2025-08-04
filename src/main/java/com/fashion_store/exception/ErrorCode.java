@@ -55,8 +55,13 @@ public enum ErrorCode {
     INVALID_CITY(53, "Invalid city.", HttpStatus.BAD_REQUEST),
     INVALID_DISTRICT(54, "Invalid district.", HttpStatus.BAD_REQUEST),
     INVALID_AUTH_PROVIDER(56, "Invalid auth provider.", HttpStatus.BAD_REQUEST),
-    INVALID_WARD(55, "Invalid ward.", HttpStatus.BAD_REQUEST);
-
+    INVALID_WARD(55, "Invalid ward.", HttpStatus.BAD_REQUEST),
+    USERNAME_INVALID(57, "Username must be at least 3 characters", HttpStatus.BAD_REQUEST),
+    INVALID_DOB(58, "Date of birth be at least 17", HttpStatus.BAD_REQUEST),
+    CANNOT_BE_DELETE(59, "Unable to delete administrator role", HttpStatus.BAD_REQUEST),
+    CANNOT_BE_UPDATE(60, "Unable to update administrator role", HttpStatus.BAD_REQUEST),
+    INVALID_ROLE_ID(61, "Invalid role id", HttpStatus.BAD_REQUEST),
+    INVALID_LIST_PERMISSION_ID(62, "Invalid list permission id", HttpStatus.BAD_REQUEST);
 
     int code;
     String message;

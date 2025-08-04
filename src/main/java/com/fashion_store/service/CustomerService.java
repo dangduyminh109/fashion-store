@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CustomerService extends GenerateService<Customer, Long> {
+public class CustomerService extends GenerateService<Customer, String> {
     CustomerRepository customerRepository;
     CloudinaryService cloudinaryService;
     CustomerMapper customerMapper;
 
     @Override
-    JpaRepository<Customer, Long> getRepository() {
+    JpaRepository<Customer, String> getRepository() {
         return customerRepository;
     }
 
@@ -64,12 +64,12 @@ public class CustomerService extends GenerateService<Customer, Long> {
                 .collect(Collectors.toList());
     }
 
-    public CustomerResponse getInfo(Long id) {
+    public CustomerResponse getInfo(String id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         return customerMapper.toCustomerResponse(customer);
     }
 
-    public void status(Long id) {
+    public void status(String id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         try {
             customer.setStatus(customer.getStatus() == null || !customer.getStatus());
@@ -79,7 +79,7 @@ public class CustomerService extends GenerateService<Customer, Long> {
         }
     }
 
-    public CustomerResponse update(CustomerUpdateRequest request, Long id) {
+    public CustomerResponse update(CustomerUpdateRequest request, String id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         if (customerRepository.existsByFullNameAndIdNot(request.getFullName(), id))
             throw new AppException(ErrorCode.EXISTED);

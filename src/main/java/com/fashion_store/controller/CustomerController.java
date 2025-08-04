@@ -30,7 +30,7 @@ public class CustomerController {
     }
 
     @GetMapping("/info/{id}")
-    public ApiResponse<CustomerResponse> getInfo(@PathVariable Long id) {
+    public ApiResponse<CustomerResponse> getInfo(@PathVariable String id) {
         return ApiResponse.<CustomerResponse>builder()
                 .result(customerService.getInfo(id))
                 .build();
@@ -45,7 +45,7 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse<CustomerResponse> update(@ModelAttribute @Valid CustomerUpdateRequest request, @PathVariable Long id) {
+    public ApiResponse<CustomerResponse> update(@ModelAttribute @Valid CustomerUpdateRequest request, @PathVariable String id) {
         return ApiResponse.<CustomerResponse>builder()
                 .message("Cập nhật khách hàng thành công")
                 .result(customerService.update(request, id))
@@ -53,7 +53,7 @@ public class CustomerController {
     }
 
     @PatchMapping("/restore/{id}")
-    public ApiResponse<Void> restore(@PathVariable Long id) {
+    public ApiResponse<Void> restore(@PathVariable String id) {
         customerService.restore(id);
         return ApiResponse.<Void>builder()
                 .message("Khôi phục khách hàng thành công")
@@ -61,7 +61,7 @@ public class CustomerController {
     }
 
     @PatchMapping("/status/{id}")
-    public ApiResponse<Void> status(@PathVariable Long id) {
+    public ApiResponse<Void> status(@PathVariable String id) {
         customerService.status(id);
         return ApiResponse.<Void>builder()
                 .message("Cập nhật trạng thái thành công")
@@ -69,7 +69,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ApiResponse<CustomerResponse> delete(@PathVariable Long id) {
+    public ApiResponse<CustomerResponse> delete(@PathVariable String id) {
         customerService.delete(id);
         return ApiResponse.<CustomerResponse>builder()
                 .message("Xóa khách hàng thành công")
@@ -77,7 +77,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/destroy/{id}")
-    public ApiResponse<CustomerResponse> destroy(@PathVariable Long id) {
+    public ApiResponse<CustomerResponse> destroy(@PathVariable String id) {
         customerService.destroy(id);
         return ApiResponse.<CustomerResponse>builder()
                 .message("Khách hàng đã bị xóa vĩnh viễn")

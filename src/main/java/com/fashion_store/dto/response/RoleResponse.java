@@ -3,19 +3,16 @@ package com.fashion_store.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AddressResponse {
+public class RoleResponse {
     Long id;
-    String customerId;
     String name;
-    String address;
-    String phone;
-    String city;
-    String district;
-    String ward;
-    Boolean isDefault;
+    String description;
+    List<PermissionResponse> permissions;
 }
