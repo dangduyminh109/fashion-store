@@ -20,4 +20,5 @@ public class UserResponse {
     Boolean isDeleted;
     Long roleId;
     String roleName;
+    String token;
 }

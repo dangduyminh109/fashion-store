@@ -34,15 +34,13 @@ public class CustomerService extends GenerateService<Customer, String> {
     }
 
     public CustomerResponse create(CustomerCreateRequest request) {
-        if (customerRepository.existsByFullName(request.getFullName()))
-            throw new AppException(ErrorCode.EXISTED);
         if (customerRepository.existsByEmail(request.getEmail()))
             throw new AppException(ErrorCode.EXISTED);
         if (customerRepository.existsByPhone(request.getPhone()))
             throw new AppException(ErrorCode.EXISTED);
         request.setAuthProvider(request.getAuthProvider().toUpperCase().trim());
         Customer customer = customerMapper.toCustomer(request);
-        customer.setPassword(passwordEncoder.encode(request.getPassword()).trim());
+        customer.setPassword(passwordEncoder.encode(request.getPassword().trim()));
 
         // handle avatar
         if (!request.getAvatar().isEmpty()) {
@@ -84,8 +82,6 @@ public class CustomerService extends GenerateService<Customer, String> {
 
     public CustomerResponse update(CustomerUpdateRequest request, String id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
-        if (customerRepository.existsByFullNameAndIdNot(request.getFullName(), id))
-            throw new AppException(ErrorCode.EXISTED);
         if (request.getEmail() != null && customerRepository.existsByEmailAndIdNot(request.getEmail(), id))
             throw new AppException(ErrorCode.EXISTED);
         if (request.getPhone() != null && customerRepository.existsByPhoneAndIdNot(request.getPhone(), id))
@@ -99,7 +95,7 @@ public class CustomerService extends GenerateService<Customer, String> {
         if (request.getOldPassword() != null && request.getNewPassword() != null) {
             boolean authenticated = passwordEncoder.matches(request.getOldPassword().trim(), customer.getPassword());
             if (authenticated) {
-                customer.setPassword(passwordEncoder.encode(request.getNewPassword()).trim());
+                customer.setPassword(passwordEncoder.encode(request.getNewPassword().trim()));
             } else {
                 throw new AppException(ErrorCode.INVALID_PASSWORD);
             }

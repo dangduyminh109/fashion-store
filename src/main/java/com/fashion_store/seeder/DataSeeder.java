@@ -50,6 +50,7 @@ public class DataSeeder implements ApplicationRunner {
             Role adminRole = roleRepository.findByName("ADMIN");
             User admin = User.builder()
                     .username("admin")
+                    .status(true)
                     .role(adminRole)
                     .password(passwordEncoder.encode("12345"))
                     .build();

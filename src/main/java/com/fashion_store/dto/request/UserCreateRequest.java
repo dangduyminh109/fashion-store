@@ -1,8 +1,7 @@
 package com.fashion_store.dto.request;
 
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserCreateRequest {
     @NotBlank(message = "INVALID")
     String username;
+    @NotBlank(message = "PASSWORD_REQUIRED")
+    @Size(min = 6, max = 32, message = "PASSWORD_LENGTH_INVALID")
     String password;
     String firstName;
     String lastName;
     String phone;
 
+    @Email(message = "INVALID_EMAIL")
     @Column(unique = true)
     String email;
 

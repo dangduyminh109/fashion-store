@@ -1,6 +1,6 @@
 package com.fashion_store.configuration;
 
-import com.fashion_store.service.AuthenticationService;
+import com.fashion_store.Utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -18,13 +18,13 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Value("${jwt.signerKey}")
     private String signerKey;
     @Autowired
-    private AuthenticationService authenticationService;
+    private JwtUtils jwtUtils;
     private NimbusJwtDecoder nimbusJwtDecoder = null;
 
     @Override
     public Jwt decode(String token) {
         try {
-            boolean isValid = authenticationService.introspect(token);
+            boolean isValid = jwtUtils.introspect(token);
             if (!isValid)
                 throw new JwtException("Token Invalid");
         } catch (Exception e) {

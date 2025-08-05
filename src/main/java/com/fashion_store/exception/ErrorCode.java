@@ -16,7 +16,6 @@ public enum ErrorCode {
     EXISTED(12, "Exited", HttpStatus.BAD_REQUEST),
     INVALID_KEY(13, "Invalid key", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_NAME(14, "Invalid name", HttpStatus.BAD_REQUEST),
-    INVALID_EMAIL(15, "Invalid email", HttpStatus.BAD_REQUEST),
     INVALID_VALUE(16, "Invalid value", HttpStatus.BAD_REQUEST),
     INVALID_SKU(17, "Sku must be at least 3 characters long", HttpStatus.BAD_REQUEST),
     INVALID_TYPE(18, "Invalid display type", HttpStatus.BAD_REQUEST),
@@ -66,9 +65,17 @@ public enum ErrorCode {
     UNSUPPORTED_MEDIA_TYPE(64, "Unsupported Content-Type.", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(66, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(67, "You do not have permission", HttpStatus.FORBIDDEN),
-    CANNOT_CREATE_TOKEN(67, "Cannot create token", HttpStatus.FORBIDDEN),
-    INVALID_TOKEN(67, "Invalid token", HttpStatus.UNAUTHORIZED),
-    INVALID_LIST_PERMISSION_ID(65, "Invalid list permission id", HttpStatus.BAD_REQUEST);
+    CANNOT_CREATE_TOKEN(68, "Cannot create token", HttpStatus.BAD_REQUEST),
+    INVALID_TOKEN(69, "Invalid token", HttpStatus.UNAUTHORIZED),
+    ACTION_FORBIDDEN(70, "Action forbidden", HttpStatus.FORBIDDEN),
+    INVALID_LIST_PERMISSION_ID(65, "Invalid list permission id", HttpStatus.BAD_REQUEST),
+    EMAIL_REQUIRED(71, "Email is required", HttpStatus.BAD_REQUEST),
+    INVALID_EMAIL(72, "Invalid email format", HttpStatus.BAD_REQUEST),
+    PASSWORD_REQUIRED(73, "Password is required", HttpStatus.BAD_REQUEST),
+    PASSWORD_LENGTH_INVALID(74, "Password must be between 6 and 32 characters", HttpStatus.BAD_REQUEST),
+    INVALID_OTP(76, "Invalid otp", HttpStatus.BAD_REQUEST),
+    EMAIL_SEND_FAILED(77, "Invalid otp", HttpStatus.INTERNAL_SERVER_ERROR),
+    PASSWORD_WEAK(75, "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character", HttpStatus.BAD_REQUEST);
 
     int code;
     String message;

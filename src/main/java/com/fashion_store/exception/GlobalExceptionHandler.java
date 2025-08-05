@@ -2,6 +2,7 @@ package com.fashion_store.exception;
 
 import com.fashion_store.dto.response.ApiResponse;
 import com.nimbusds.jose.JOSEException;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -140,6 +141,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(JOSEException.class)
     public ResponseEntity<ApiResponse<Void>> JOSEExceptionHandler(JOSEException ex) {
         ErrorCode errorCode = ErrorCode.CANNOT_CREATE_TOKEN;
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
+                ApiResponse.<Void>builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
+    }
+
+    // lỗi không gửi được mail
+    @ExceptionHandler(MessagingException.class)
+    ResponseEntity<ApiResponse<Void>> MessagingExceptionHandler(MessagingException e) {
+        ErrorCode errorCode = ErrorCode.EMAIL_SEND_FAILED;
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
                 ApiResponse.<Void>builder()
                         .code(errorCode.getCode())

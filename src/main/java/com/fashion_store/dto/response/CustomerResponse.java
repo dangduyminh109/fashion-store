@@ -22,4 +22,5 @@ public class CustomerResponse {
     Boolean isDeleted;
     Boolean status;
     List<AddressResponse> addresses;
+    String token;
 }

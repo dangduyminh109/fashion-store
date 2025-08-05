@@ -22,9 +22,9 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ApiResponse<AuthenticationResponse> login(@RequestBody @Valid AuthenticationRequest authenticationRequest) throws JOSEException {
-        AuthenticationResponse authenticationResponse = authenticationService.login(authenticationRequest);
-        return ApiResponse.<AuthenticationResponse>builder()
+    public ApiResponse<UserResponse> login(@RequestBody @Valid AuthenticationRequest authenticationRequest) throws JOSEException {
+        UserResponse authenticationResponse = authenticationService.login(authenticationRequest);
+        return ApiResponse.<UserResponse>builder()
                 .result(authenticationResponse)
                 .build();
     }

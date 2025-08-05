@@ -1,9 +1,11 @@
 package com.fashion_store.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,10 @@ public class Product extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     Brand brand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    List<CartItem> cartItems = new ArrayList<>();
 
     @Override
     public String toString() {

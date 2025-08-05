@@ -1,5 +1,6 @@
 package com.fashion_store.service;
 
+import com.fashion_store.Utils.SecurityUtils;
 import com.fashion_store.dto.request.UserCreateRequest;
 import com.fashion_store.dto.request.UserUpdateRequest;
 import com.fashion_store.dto.response.UserResponse;
@@ -76,6 +77,12 @@ public class UserService extends GenerateService<User, String> {
 
     public void status(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+
+        String currentUserId = SecurityUtils.getCurrentUserId();
+
+        if (id.equals(currentUserId)) {
+            throw new AppException(ErrorCode.ACTION_FORBIDDEN);
+        }
         try {
             user.setStatus(user.getStatus() == null || !user.getStatus());
             userRepository.save(user);
@@ -90,8 +97,18 @@ public class UserService extends GenerateService<User, String> {
             throw new AppException(ErrorCode.EXISTED);
         if (request.getEmail() != null && userRepository.existsByEmailAndIdNot(request.getEmail(), id))
             throw new AppException(ErrorCode.EXISTED);
+        if (request.getStatus() != null) {
+            String currentUserId = SecurityUtils.getCurrentUserId();
+
+            if (id.equals(currentUserId)) {
+                throw new AppException(ErrorCode.ACTION_FORBIDDEN);
+            }
+        }
+
         userMapper.updateUser(user, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
         if (request.getRoleId() != null) {
             Role role = roleRepository.findById(request.getRoleId())
                     .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
@@ -114,5 +131,19 @@ public class UserService extends GenerateService<User, String> {
 
         user = userRepository.save(user);
         return userMapper.toUserResponse(user);
+    }
+
+    public void delete(String id) {
+        User item = getRepository().findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+        String currentUserId = SecurityUtils.getCurrentUserId();
+        if (id.equals(currentUserId)) {
+            throw new AppException(ErrorCode.ACTION_FORBIDDEN);
+        }
+        try {
+            item.setIsDeleted(true);
+            getRepository().save(item);
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+        }
     }
 }

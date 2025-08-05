@@ -1,6 +1,7 @@
 package com.fashion_store.mapper;
 
 import com.fashion_store.dto.request.CustomerCreateRequest;
+import com.fashion_store.dto.request.CustomerRegisterRequest;
 import com.fashion_store.dto.request.CustomerUpdateRequest;
 import com.fashion_store.dto.response.CustomerResponse;
 import com.fashion_store.entity.Customer;
@@ -14,6 +15,9 @@ public interface CustomerMapper {
     @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "password", ignore = true)
     Customer toCustomer(CustomerCreateRequest customerCreateRequest);
+
+    @Mapping(target = "password", ignore = true)
+    Customer toCustomer(CustomerRegisterRequest customerRegisterRequest);
 
     CustomerResponse toCustomerResponse(Customer customer);
 
