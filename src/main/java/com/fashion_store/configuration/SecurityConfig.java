@@ -16,11 +16,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private String[] PUBLIC_ROUTER = {
+    private final String[] PUBLIC_ROUTER = {
             "/admin/auth/login",
             "/admin/auth/logout",
             "/admin/auth/refresh",
-
     };
     @Value("${jwt.signerKey}")
     protected String signerKey;
