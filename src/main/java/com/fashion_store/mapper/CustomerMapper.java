@@ -12,11 +12,13 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {AddressMapper.class})
 public interface CustomerMapper {
     @Mapping(target = "avatar", ignore = true)
+    @Mapping(target = "password", ignore = true)
     Customer toCustomer(CustomerCreateRequest customerCreateRequest);
 
     CustomerResponse toCustomerResponse(Customer customer);
 
     @Mapping(target = "isDeleted", ignore = true)
     @Mapping(target = "avatar", ignore = true)
+    @Mapping(target = "password", ignore = true)
     void updateCustomer(@MappingTarget Customer customer, CustomerUpdateRequest customerUpdateRequest);
 }

@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class CustomerController {
     CustomerService customerService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('CUSTOMER_VIEW')")
     public ApiResponse<List<CustomerResponse>> getAll() {
         return ApiResponse.<List<CustomerResponse>>builder()
                 .result(customerService.getAll())
@@ -30,6 +32,7 @@ public class CustomerController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('CUSTOMER_VIEW')")
     public ApiResponse<CustomerResponse> getInfo(@PathVariable String id) {
         return ApiResponse.<CustomerResponse>builder()
                 .result(customerService.getInfo(id))
@@ -37,6 +40,7 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('CUSTOMER_CREATE')")
     public ApiResponse<CustomerResponse> create(@ModelAttribute @Valid CustomerCreateRequest request) {
         return ApiResponse.<CustomerResponse>builder()
                 .message("Tạo khách hàng thành công")
@@ -45,6 +49,7 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('CUSTOMER_UPDATE')")
     public ApiResponse<CustomerResponse> update(@ModelAttribute @Valid CustomerUpdateRequest request, @PathVariable String id) {
         return ApiResponse.<CustomerResponse>builder()
                 .message("Cập nhật khách hàng thành công")
@@ -53,6 +58,7 @@ public class CustomerController {
     }
 
     @PatchMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('CUSTOMER_UPDATE')")
     public ApiResponse<Void> restore(@PathVariable String id) {
         customerService.restore(id);
         return ApiResponse.<Void>builder()
@@ -61,6 +67,7 @@ public class CustomerController {
     }
 
     @PatchMapping("/status/{id}")
+    @PreAuthorize("hasAuthority('CUSTOMER_UPDATE')")
     public ApiResponse<Void> status(@PathVariable String id) {
         customerService.status(id);
         return ApiResponse.<Void>builder()
@@ -69,6 +76,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('CUSTOMER_DELETE')")
     public ApiResponse<CustomerResponse> delete(@PathVariable String id) {
         customerService.delete(id);
         return ApiResponse.<CustomerResponse>builder()
@@ -77,6 +85,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/destroy/{id}")
+    @PreAuthorize("hasAuthority('CUSTOMER_DELETE')")
     public ApiResponse<CustomerResponse> destroy(@PathVariable String id) {
         customerService.destroy(id);
         return ApiResponse.<CustomerResponse>builder()

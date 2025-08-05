@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class AttributeValueController {
     AttributeValueService attributeValueService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ATTRIBUTE_VALUE_VIEW')")
     public ApiResponse<List<AttributeValueResponse>> getAll() {
         return ApiResponse.<List<AttributeValueResponse>>builder()
                 .result(attributeValueService.getAll())
@@ -28,6 +30,7 @@ public class AttributeValueController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_VALUE_VIEW')")
     public ApiResponse<AttributeValueResponse> getInfo(@PathVariable Long id) {
         return ApiResponse.<AttributeValueResponse>builder()
                 .result(attributeValueService.getInfo(id))
@@ -35,6 +38,7 @@ public class AttributeValueController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_VALUE_CREATE')")
     public ApiResponse<AttributeValueResponse> create(@ModelAttribute @Valid AttributeValueRequest request) {
         return ApiResponse.<AttributeValueResponse>builder()
                 .message("Tạo giá trị của thuộc tính thành công")
@@ -43,6 +47,7 @@ public class AttributeValueController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_VALUE_UPDATE')")
     public ApiResponse<AttributeValueResponse> update(@ModelAttribute @Valid AttributeValueUpdateRequest request, @PathVariable Long id) {
         return ApiResponse.<AttributeValueResponse>builder()
                 .message("Cập nhật giá trị của thuộc tính thành công")
@@ -51,6 +56,7 @@ public class AttributeValueController {
     }
 
     @DeleteMapping("/destroy/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_VALUE_DELETE')")
     public ApiResponse<AttributeValueResponse> destroy(@PathVariable Long id) {
         attributeValueService.destroy(id);
         return ApiResponse.<AttributeValueResponse>builder()

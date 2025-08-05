@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class BrandController {
     BrandService brandService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('BRAND_VIEW')")
     public ApiResponse<List<BrandResponse>> getAll() {
         return ApiResponse.<List<BrandResponse>>builder()
                 .result(brandService.getAll())
@@ -29,6 +31,7 @@ public class BrandController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('BRAND_VIEW')")
     public ApiResponse<BrandResponse> getInfo(@PathVariable Long id) {
         return ApiResponse.<BrandResponse>builder()
                 .result(brandService.getInfo(id))
@@ -36,6 +39,7 @@ public class BrandController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('BRAND_CREATE')")
     public ApiResponse<BrandResponse> create(@ModelAttribute @Valid BrandRequest request) {
         return ApiResponse.<BrandResponse>builder()
                 .message("Tạo thương hiệu thành công")
@@ -44,6 +48,7 @@ public class BrandController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('BRAND_UPDATE')")
     public ApiResponse<BrandResponse> update(@ModelAttribute @Valid BrandRequest request, @PathVariable Long id) {
         return ApiResponse.<BrandResponse>builder()
                 .message("Cập nhật thương hiệu thành công")
@@ -52,6 +57,7 @@ public class BrandController {
     }
 
     @PatchMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('BRAND_UPDATE')")
     public ApiResponse<Void> restore(@PathVariable Long id) {
         brandService.restore(id);
         return ApiResponse.<Void>builder()
@@ -60,6 +66,7 @@ public class BrandController {
     }
 
     @PatchMapping("/status/{id}")
+    @PreAuthorize("hasAuthority('BRAND_UPDATE')")
     public ApiResponse<Void> status(@PathVariable Long id) {
         brandService.status(id);
         return ApiResponse.<Void>builder()
@@ -68,6 +75,7 @@ public class BrandController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('BRAND_DELETE')")
     public ApiResponse<BrandResponse> delete(@PathVariable Long id) {
         brandService.delete(id);
         return ApiResponse.<BrandResponse>builder()
@@ -76,6 +84,7 @@ public class BrandController {
     }
 
     @DeleteMapping("/destroy/{id}")
+    @PreAuthorize("hasAuthority('BRAND_DELETE')")
     public ApiResponse<BrandResponse> destroy(@PathVariable Long id) {
         brandService.destroy(id);
         return ApiResponse.<BrandResponse>builder()

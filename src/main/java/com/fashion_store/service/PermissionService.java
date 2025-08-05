@@ -27,9 +27,4 @@ public class PermissionService {
                 .map(permissionMapper::toPermissionResponse)
                 .collect(Collectors.toList());
     }
-
-    public PermissionResponse getInfo(Long id) {
-        Permission permission = permissionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
-        return permissionMapper.toPermissionResponse(permission);
-    }
 }

@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('CATEGORY_VIEW')")
     public ApiResponse<List<CategoryResponse>> getAll() {
         return ApiResponse.<List<CategoryResponse>>builder()
                 .result(categoryService.getAll())
@@ -29,6 +31,7 @@ public class CategoryController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('CATEGORY_VIEW')")
     public ApiResponse<CategoryResponse> getInfo(@PathVariable Long id) {
         return ApiResponse.<CategoryResponse>builder()
                 .result(categoryService.getInfo(id))
@@ -36,6 +39,7 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('CATEGORY_CREATE')")
     public ApiResponse<CategoryResponse> create(@ModelAttribute @Valid CategoryRequest request) {
         return ApiResponse.<CategoryResponse>builder()
                 .message("Tạo danh mục thành công")
@@ -44,6 +48,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('CATEGORY_UPDATE')")
     public ApiResponse<CategoryResponse> update(@ModelAttribute @Valid CategoryRequest request, @PathVariable Long id) {
         return ApiResponse.<CategoryResponse>builder()
                 .message("Cập nhật danh mục thành công")
@@ -52,6 +57,7 @@ public class CategoryController {
     }
 
     @PatchMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('CATEGORY_UPDATE')")
     public ApiResponse<Void> restore(@PathVariable Long id) {
         categoryService.restore(id);
         return ApiResponse.<Void>builder()
@@ -60,6 +66,7 @@ public class CategoryController {
     }
 
     @PatchMapping("/status/{id}")
+    @PreAuthorize("hasAuthority('CATEGORY_UPDATE')")
     public ApiResponse<Void> status(@PathVariable Long id) {
         categoryService.status(id);
         return ApiResponse.<Void>builder()
@@ -68,6 +75,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('CATEGORY_DELETE')")
     public ApiResponse<CategoryResponse> delete(@PathVariable Long id) {
         categoryService.delete(id);
         return ApiResponse.<CategoryResponse>builder()
@@ -76,6 +84,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/destroy/{id}")
+    @PreAuthorize("hasAuthority('CATEGORY_DELETE')")
     public ApiResponse<CategoryResponse> destroy(@PathVariable Long id) {
         categoryService.destroy(id);
         return ApiResponse.<CategoryResponse>builder()

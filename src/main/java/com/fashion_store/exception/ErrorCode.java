@@ -61,7 +61,14 @@ public enum ErrorCode {
     CANNOT_BE_DELETE(59, "Unable to delete administrator role", HttpStatus.BAD_REQUEST),
     CANNOT_BE_UPDATE(60, "Unable to update administrator role", HttpStatus.BAD_REQUEST),
     INVALID_ROLE_ID(61, "Invalid role id", HttpStatus.BAD_REQUEST),
-    INVALID_LIST_PERMISSION_ID(62, "Invalid list permission id", HttpStatus.BAD_REQUEST);
+    INVALID_PASSWORD(62, "Invalid password", HttpStatus.BAD_REQUEST),
+    ROLE_IN_USE(63, "Cannot delete role because it is currently assigned to one or more users.", HttpStatus.BAD_REQUEST),
+    UNSUPPORTED_MEDIA_TYPE(64, "Unsupported Content-Type.", HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(66, "Unauthenticated", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED(67, "You do not have permission", HttpStatus.FORBIDDEN),
+    CANNOT_CREATE_TOKEN(67, "Cannot create token", HttpStatus.FORBIDDEN),
+    INVALID_TOKEN(67, "Invalid token", HttpStatus.UNAUTHORIZED),
+    INVALID_LIST_PERMISSION_ID(65, "Invalid list permission id", HttpStatus.BAD_REQUEST);
 
     int code;
     String message;

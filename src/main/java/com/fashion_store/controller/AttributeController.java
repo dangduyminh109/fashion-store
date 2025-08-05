@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class AttributeController {
     AttributeService attributeService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ATTRIBUTE_VIEW')")
     public ApiResponse<List<AttributeResponse>> getAll() {
         return ApiResponse.<List<AttributeResponse>>builder()
                 .result(attributeService.getAll())
@@ -27,6 +29,7 @@ public class AttributeController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_VIEW')")
     public ApiResponse<AttributeResponse> getInfo(@PathVariable Long id) {
         return ApiResponse.<AttributeResponse>builder()
                 .result(attributeService.getInfo(id))
@@ -34,6 +37,7 @@ public class AttributeController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_CREATE')")
     public ApiResponse<AttributeResponse> create(@ModelAttribute @Valid AttributeRequest request) {
         return ApiResponse.<AttributeResponse>builder()
                 .message("Tạo thuộc tính thành công")
@@ -42,6 +46,7 @@ public class AttributeController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_UPDATE')")
     public ApiResponse<AttributeResponse> update(@ModelAttribute @Valid AttributeRequest request, @PathVariable Long id) {
         return ApiResponse.<AttributeResponse>builder()
                 .message("Cập nhật thuộc tính thành công")
@@ -50,6 +55,7 @@ public class AttributeController {
     }
 
     @PatchMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_UPDATE')")
     public ApiResponse<Void> restore(@PathVariable Long id) {
         attributeService.restore(id);
         return ApiResponse.<Void>builder()
@@ -58,6 +64,7 @@ public class AttributeController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_UPDATE')")
     public ApiResponse<AttributeResponse> delete(@PathVariable Long id) {
         attributeService.delete(id);
         return ApiResponse.<AttributeResponse>builder()
@@ -66,6 +73,7 @@ public class AttributeController {
     }
 
     @DeleteMapping("/destroy/{id}")
+    @PreAuthorize("hasAuthority('ATTRIBUTE_DELETE')")
     public ApiResponse<AttributeResponse> destroy(@PathVariable Long id) {
         attributeService.destroy(id);
         return ApiResponse.<AttributeResponse>builder()

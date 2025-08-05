@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ImportReceiptController {
     ImportReceiptService importReceiptService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('IMPORT_RECEIPT_VIEW')")
     public ApiResponse<List<ImportReceiptResponse>> getAll() {
         return ApiResponse.<List<ImportReceiptResponse>>builder()
                 .result(importReceiptService.getAll())
@@ -30,6 +32,7 @@ public class ImportReceiptController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('IMPORT_RECEIPT_VIEW')")
     public ApiResponse<ImportReceiptResponse> getInfo(@PathVariable Long id) {
         return ApiResponse.<ImportReceiptResponse>builder()
                 .result(importReceiptService.getInfo(id))
@@ -37,6 +40,7 @@ public class ImportReceiptController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('IMPORT_RECEIPT_CREATE')")
     public ApiResponse<ImportReceiptResponse> create(@RequestBody @Valid ImportReceiptRequest request) {
         return ApiResponse.<ImportReceiptResponse>builder()
                 .message("Tạo phiếu nhập hàng thành công")
@@ -45,6 +49,7 @@ public class ImportReceiptController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('IMPORT_RECEIPT_UPDATE')")
     public ApiResponse<ImportReceiptResponse> update(@RequestBody @Valid ImportReceiptUpdateRequest request, @PathVariable Long id) {
         return ApiResponse.<ImportReceiptResponse>builder()
                 .message("Cập nhật phiếu nhập hàng thành công")
@@ -53,6 +58,7 @@ public class ImportReceiptController {
     }
 
     @PatchMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('IMPORT_RECEIPT_UPDATE')")
     public ApiResponse<Void> restore(@PathVariable Long id) {
         importReceiptService.restore(id);
         return ApiResponse.<Void>builder()
@@ -61,6 +67,7 @@ public class ImportReceiptController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('IMPORT_RECEIPT_DELETE')")
     public ApiResponse<ImportReceiptResponse> delete(@PathVariable Long id) {
         importReceiptService.delete(id);
         return ApiResponse.<ImportReceiptResponse>builder()
@@ -69,6 +76,7 @@ public class ImportReceiptController {
     }
 
     @DeleteMapping("/destroy/{id}")
+    @PreAuthorize("hasAuthority('IMPORT_RECEIPT_DELETE')")
     public ApiResponse<ImportReceiptResponse> destroy(@PathVariable Long id) {
         importReceiptService.destroy(id);
         return ApiResponse.<ImportReceiptResponse>builder()

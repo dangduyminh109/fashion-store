@@ -80,6 +80,9 @@ public class RoleService {
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         if (role.getName().equals("ADMIN"))
             throw new AppException(ErrorCode.CANNOT_BE_DELETE);
+        if (!role.getUsers().isEmpty()) {
+            throw new AppException(ErrorCode.ROLE_IN_USE);
+        }
         roleRepository.deleteById(id);
     }
 

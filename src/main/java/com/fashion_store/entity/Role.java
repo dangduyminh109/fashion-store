@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,4 +31,7 @@ public class Role extends BaseModel {
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     Set<Permission> permissions = new HashSet<>();
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    List<User> users;
 }

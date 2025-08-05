@@ -21,25 +21,23 @@ public class Customer extends BaseModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    Boolean isGuest;
+    String avatar;
+    String password;
+    String providerId;
+    Boolean status;
+
     @Column(nullable = false)
     String fullName;
+
     @Column(unique = true)
     String email;
+
     @Column(unique = true)
     String phone;
 
-    Boolean isGuest;
-
-    String avatar;
-
-    String password;
-
     @Column(nullable = false)
     AuthProvider authProvider;
-
-    String providerId;
-
-    Boolean status;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Address> addresses;

@@ -3,23 +3,21 @@ package com.fashion_store.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerResponse {
+public class UserResponse {
     String id;
-    String fullName;
-    String email;
-    String phone;
-    Boolean isGuest;
-    String avatar;
-    String providerId;
-    String authProvider;
-    Boolean isDeleted;
+    String firstName;
+    String lastName;
     Boolean status;
-    List<AddressResponse> addresses;
+    String avatar;
+    String phone;
+    String username;
+    String email;
+    Boolean isDeleted;
+    Long roleId;
+    String roleName;
 }

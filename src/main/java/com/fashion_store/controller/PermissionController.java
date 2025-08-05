@@ -23,11 +23,4 @@ public class PermissionController {
                 .result(permissionService.getAll())
                 .build();
     }
-
-    @GetMapping("/info/{id}")
-    public ApiResponse<PermissionResponse> getInfo(@PathVariable Long id) {
-        return ApiResponse.<PermissionResponse>builder()
-                .result(permissionService.getInfo(id))
-                .build();
-    }
 }

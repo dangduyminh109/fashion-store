@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class CustomerService extends GenerateService<Customer, String> {
     CustomerRepository customerRepository;
     CloudinaryService cloudinaryService;
     CustomerMapper customerMapper;
+    PasswordEncoder passwordEncoder;
 
     @Override
     JpaRepository<Customer, String> getRepository() {
@@ -40,12 +42,13 @@ public class CustomerService extends GenerateService<Customer, String> {
             throw new AppException(ErrorCode.EXISTED);
         request.setAuthProvider(request.getAuthProvider().toUpperCase().trim());
         Customer customer = customerMapper.toCustomer(request);
+        customer.setPassword(passwordEncoder.encode(request.getPassword()).trim());
 
-        // handle image
+        // handle avatar
         if (!request.getAvatar().isEmpty()) {
             try {
-                String imageUrl = cloudinaryService.uploadFile(request.getAvatar());
-                customer.setAvatar(imageUrl);
+                String avatarUrl = cloudinaryService.uploadFile(request.getAvatar());
+                customer.setAvatar(avatarUrl);
 
             } catch (IOException e) {
                 throw new AppException(ErrorCode.FILE_SAVE_FAILED);
@@ -83,9 +86,9 @@ public class CustomerService extends GenerateService<Customer, String> {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         if (customerRepository.existsByFullNameAndIdNot(request.getFullName(), id))
             throw new AppException(ErrorCode.EXISTED);
-        if (request.getEmail() != null && customerRepository.existsByEmailAndIdNot(request.getFullName(), id))
+        if (request.getEmail() != null && customerRepository.existsByEmailAndIdNot(request.getEmail(), id))
             throw new AppException(ErrorCode.EXISTED);
-        if (request.getPhone() != null && customerRepository.existsByPhoneAndIdNot(request.getFullName(), id))
+        if (request.getPhone() != null && customerRepository.existsByPhoneAndIdNot(request.getPhone(), id))
             throw new AppException(ErrorCode.EXISTED);
 
         if (request.getAuthProvider() != null) {
@@ -93,17 +96,25 @@ public class CustomerService extends GenerateService<Customer, String> {
         }
         customerMapper.updateCustomer(customer, request);
 
-        // handle image
-        boolean imageDelete = request.getAvatarDelete() != null && request.getAvatarDelete();
+        if (request.getOldPassword() != null && request.getNewPassword() != null) {
+            boolean authenticated = passwordEncoder.matches(request.getOldPassword().trim(), customer.getPassword());
+            if (authenticated) {
+                customer.setPassword(passwordEncoder.encode(request.getNewPassword()).trim());
+            } else {
+                throw new AppException(ErrorCode.INVALID_PASSWORD);
+            }
+        }
+        // handle avatar
+        boolean avatarDelete = request.getAvatarDelete() != null && request.getAvatarDelete();
         if (!request.getAvatar().isEmpty()) {
             try {
-                String imageUrl = cloudinaryService.uploadFile(request.getAvatar());
+                String avatarUrl = cloudinaryService.uploadFile(request.getAvatar());
                 // Lưu URL vào DB
-                customer.setAvatar(imageUrl);
+                customer.setAvatar(avatarUrl);
             } catch (IOException e) {
                 throw new AppException(ErrorCode.FILE_SAVE_FAILED);
             }
-        } else if (imageDelete) {
+        } else if (avatarDelete) {
             customer.setAvatar("");
         }
 

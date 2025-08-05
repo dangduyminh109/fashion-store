@@ -1,6 +1,6 @@
 package com.fashion_store.dto.request;
 
-import com.fashion_store.validator.AuthProviderConstraint;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -12,23 +12,26 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerUpdateRequest {
-    @NotBlank(message = "INVALID_NAME")
-    String fullName;
-    String email;
+public class UserCreateRequest {
+    @NotBlank(message = "INVALID")
+    String username;
+    String password;
+    String firstName;
+    String lastName;
     String phone;
-    Boolean isGuest;
-    String oldPassword;
-    String newPassword;
-    String providerId;
-    Boolean status;
 
-    @AuthProviderConstraint(message = "INVALID_AUTH_PROVIDER")
-    String authProvider;
+    @Column(unique = true)
+    String email;
+
+    @NotNull(message = "INVALID_ROLE_ID")
+    Long roleId;
 
     @NotNull(message = "INVALID_FILE")
     MultipartFile avatar;
 
     @Builder.Default
-    Boolean avatarDelete = false;
+    Boolean status = true;
 }
+
+
+

@@ -1,14 +1,18 @@
 package com.fashion_store.exception;
 
 import com.fashion_store.dto.response.ApiResponse;
+import com.nimbusds.jose.JOSEException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.text.ParseException;
 import java.util.Arrays;
 
 @Slf4j
@@ -26,7 +30,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiResponse<Void>> handleInvalidFormat(HttpMessageNotReadableException ex) {
+    public ResponseEntity<ApiResponse<Void>> HttpMessageNotReadableExceptionHandler(HttpMessageNotReadableException ex) {
         ErrorCode errorCode = ErrorCode.INVALID_FORM_FORMAT;
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
                 ApiResponse.<Void>builder()
@@ -88,6 +92,54 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse<Void>> AppExceptionHandler(AppException e) {
         ErrorCode errorCode = e.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
+                ApiResponse.<Void>builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
+    }
+
+    // lỗi content-type
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    ResponseEntity<ApiResponse<Void>> HttpMediaTypeNotSupportedExceptionHandler(HttpMediaTypeNotSupportedException e) {
+        ErrorCode errorCode = ErrorCode.UNSUPPORTED_MEDIA_TYPE;
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
+                ApiResponse.<Void>builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
+    }
+
+    // không có quyền truy cập
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiResponse> AccessDeniedExceptionHandler(AccessDeniedException exception) {
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
+                ApiResponse.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
+    }
+
+    // lỗi giải token
+    @ExceptionHandler(ParseException.class)
+    public ResponseEntity<ApiResponse<Void>> ParseExceptionHandler(ParseException ex) {
+        ErrorCode errorCode = ErrorCode.INVALID_TOKEN;
+        return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
+                ApiResponse.<Void>builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
+    }
+
+    // sai key hoặt thuật toán
+    @ExceptionHandler(JOSEException.class)
+    public ResponseEntity<ApiResponse<Void>> JOSEExceptionHandler(JOSEException ex) {
+        ErrorCode errorCode = ErrorCode.CANNOT_CREATE_TOKEN;
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(
                 ApiResponse.<Void>builder()
                         .code(errorCode.getCode())

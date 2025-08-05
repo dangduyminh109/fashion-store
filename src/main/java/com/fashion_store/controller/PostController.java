@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class PostController {
     PostService postService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('POST_VIEW')")
     public ApiResponse<List<PostResponse>> getAll() {
         return ApiResponse.<List<PostResponse>>builder()
                 .result(postService.getAll())
@@ -29,6 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAuthority('POST_VIEW')")
     public ApiResponse<PostResponse> getInfo(@PathVariable Long id) {
         return ApiResponse.<PostResponse>builder()
                 .result(postService.getInfo(id))
@@ -36,6 +39,7 @@ public class PostController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('POST_CREATE')")
     public ApiResponse<PostResponse> create(@ModelAttribute @Valid PostRequest request) {
         return ApiResponse.<PostResponse>builder()
                 .message("Tạo bài đăng thành công")
@@ -44,6 +48,7 @@ public class PostController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('POST_UPDATE')")
     public ApiResponse<PostResponse> update(@ModelAttribute @Valid PostRequest request, @PathVariable Long id) {
         return ApiResponse.<PostResponse>builder()
                 .message("Cập nhật bài đăng thành công")
@@ -52,6 +57,7 @@ public class PostController {
     }
 
     @PatchMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('POST_UPDATE')")
     public ApiResponse<Void> restore(@PathVariable Long id) {
         postService.restore(id);
         return ApiResponse.<Void>builder()
@@ -60,6 +66,7 @@ public class PostController {
     }
 
     @PatchMapping("/status/{id}")
+    @PreAuthorize("hasAuthority('POST_UPDATE')")
     public ApiResponse<Void> status(@PathVariable Long id) {
         postService.status(id);
         return ApiResponse.<Void>builder()
@@ -68,6 +75,7 @@ public class PostController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('POST_DELETE')")
     public ApiResponse<PostResponse> delete(@PathVariable Long id) {
         postService.delete(id);
         return ApiResponse.<PostResponse>builder()
@@ -76,6 +84,7 @@ public class PostController {
     }
 
     @DeleteMapping("/destroy/{id}")
+    @PreAuthorize("hasAuthority('POST_DELETE')")
     public ApiResponse<PostResponse> destroy(@PathVariable Long id) {
         postService.destroy(id);
         return ApiResponse.<PostResponse>builder()
