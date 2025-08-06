@@ -33,7 +33,4 @@ public class User extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "role_id")
     Role role;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-    Cart cart;
 }

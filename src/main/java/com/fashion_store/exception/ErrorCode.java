@@ -75,6 +75,9 @@ public enum ErrorCode {
     PASSWORD_LENGTH_INVALID(74, "Password must be between 6 and 32 characters", HttpStatus.BAD_REQUEST),
     INVALID_OTP(76, "Invalid otp", HttpStatus.BAD_REQUEST),
     EMAIL_SEND_FAILED(77, "Invalid otp", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_PRODUCT_ID(78, "Invalid product id", HttpStatus.BAD_REQUEST),
+    INVALID_QUANTITY_UPDATE(79, "Excess request number already exists", HttpStatus.BAD_REQUEST),
+    VARIANT_NOT_AVAILABLE(80, "Product not available", HttpStatus.BAD_REQUEST),
     PASSWORD_WEAK(75, "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character", HttpStatus.BAD_REQUEST);
 
     int code;

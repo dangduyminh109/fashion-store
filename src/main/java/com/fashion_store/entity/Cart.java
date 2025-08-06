@@ -24,6 +24,6 @@ public class Cart {
     List<CartItem> cartItems = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    @JoinColumn(name = "customer_id", nullable = false)
+    Customer customer;
 }

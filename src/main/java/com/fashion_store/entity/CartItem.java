@@ -21,8 +21,8 @@ public class CartItem extends BaseModel {
     Integer quantity;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
-    Product product;
+    @JoinColumn(name = "variant_id")
+    Variant variant;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")

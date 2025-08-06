@@ -49,10 +49,6 @@ public class Product extends BaseModel {
     @JoinColumn(name = "brand_id")
     Brand brand;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    List<CartItem> cartItems = new ArrayList<>();
-
     @Override
     public String toString() {
         return String.format(

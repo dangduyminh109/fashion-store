@@ -41,4 +41,7 @@ public class Customer extends BaseModel {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Address> addresses;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    Cart cart;
 }

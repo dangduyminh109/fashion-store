@@ -2,11 +2,9 @@ package com.fashion_store.mapper;
 
 import com.fashion_store.dto.request.VariantCreateRequest;
 import com.fashion_store.dto.request.VariantUpdateRequest;
-import com.fashion_store.dto.response.VariantResponse;
+import com.fashion_store.dto.response.VariantClientResponse;
 import com.fashion_store.entity.Variant;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = {AttributeValueMapper.class})
 public interface VariantMapper {
@@ -16,5 +14,7 @@ public interface VariantMapper {
 
     void updateVariant(@MappingTarget Variant variant, VariantUpdateRequest variantUpdateRequest);
 
-    VariantResponse toVariantResponse(Variant variant);
+    @Mapping(target = "product.variants", ignore = true)
+    @Mapping(target = "product.productImages", expression = "java(product.getProductImages() != null ? product.getProductImages().stream().map(img->img.getUrl()).toList() : null)")
+    VariantClientResponse toVariantClientResponse(Variant variant);
 }
