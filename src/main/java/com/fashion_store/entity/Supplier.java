@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +27,7 @@ public class Supplier extends BaseModel {
     Boolean status;
 
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
-    List<ImportReceipt> importReceipts;
+    List<ImportReceipt> importReceipts = new ArrayList<>();
 
     @Override
     public String toString() {

@@ -36,10 +36,10 @@ public class Product extends BaseModel {
     Long position;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ProductImage> productImages;
+    List<ProductImage> productImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Variant> variants;
+    List<Variant> variants = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id")

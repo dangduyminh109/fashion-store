@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,8 +41,11 @@ public class Customer extends BaseModel {
     AuthProvider authProvider;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Address> addresses;
+    List<Address> addresses = new ArrayList<>();
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.REMOVE)
     Cart cart;
+
+    @OneToMany(mappedBy = "customer")
+    List<Order> orders = new ArrayList<>();
 }

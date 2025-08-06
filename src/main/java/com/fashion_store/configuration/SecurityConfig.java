@@ -28,7 +28,8 @@ public class SecurityConfig {
             "/auth/send-otp",
             "/auth/oauth2/success",
             "/oauth2/**",
-            "/auth/**"
+            "/auth/**",
+            "/order/client/create"
     };
 
     @Value("${jwt.signerKey}")

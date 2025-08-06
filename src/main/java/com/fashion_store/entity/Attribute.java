@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,5 +26,5 @@ public class Attribute extends BaseModel {
     AttributeDisplayType displayType;
 
     @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<AttributeValue> attributeValues;
+    List<AttributeValue> attributeValues = new ArrayList<>();
 }

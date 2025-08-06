@@ -1,6 +1,6 @@
 package com.fashion_store.configuration;
 
-import com.fashion_store.Utils.TypeUser;
+import com.fashion_store.enums.TypeUser;
 import com.fashion_store.entity.Customer;
 import com.fashion_store.entity.User;
 import com.fashion_store.exception.AppException;

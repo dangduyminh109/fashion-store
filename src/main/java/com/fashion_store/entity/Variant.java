@@ -56,6 +56,9 @@ public class Variant extends BaseModel {
     )
     Set<AttributeValue> attributeValues = new HashSet<>();
 
+    @OneToMany(mappedBy = "variant")
+    List<OrderItem> orderItems = new ArrayList<>();
+
     @Override
     public String toString() {
         return String.format(

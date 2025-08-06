@@ -131,6 +131,11 @@ public class DataSeeder implements ApplicationRunner {
                 Permission.builder().code("ATTRIBUTE_VALUE_UPDATE").name("Cập nhật").module("Giá trị thuộc tính").build(),
                 Permission.builder().code("ATTRIBUTE_VALUE_DELETE").name("Xóa").module("Giá trị thuộc tính").build(),
 
+                Permission.builder().code("ORDER_VIEW").name("Xem").module("Đơn hàng").build(),
+                Permission.builder().code("ORDER_CREATE").name("Thêm mới").module("Đơn hàng").build(),
+                Permission.builder().code("ORDER_UPDATE").name("Cập nhật").module("Đơn hàng").build(),
+                Permission.builder().code("ORDER_DELETE").name("Xóa").module("Đơn hàng").build(),
+
                 Permission.builder().code("SUPPLIER_VIEW").name("Xem").module("Nhà cung cấp").build(),
                 Permission.builder().code("SUPPLIER_CREATE").name("Thêm mới").module("Nhà cung cấp").build(),
                 Permission.builder().code("SUPPLIER_UPDATE").name("Cập nhật").module("Nhà cung cấp").build(),

@@ -1,7 +1,7 @@
 package com.fashion_store.configuration;
 
 import com.fashion_store.Utils.JwtUtils;
-import com.fashion_store.Utils.TypeUser;
+import com.fashion_store.enums.TypeUser;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

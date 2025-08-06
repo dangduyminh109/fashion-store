@@ -26,6 +26,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
+        String googleId = oAuth2User.getAttribute("sub");
 
         Customer customer = customerRepository.findByEmail(email)
                 .orElseGet(() -> {
@@ -34,10 +35,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                             .fullName(name)
                             .status(true)
                             .authProvider(AuthProvider.GOOGLE)
+                            .providerId(googleId)
                             .build();
                     return customerRepository.save(newCustomer);
                 });
-
         return new CustomOAuth2User(oAuth2User.getAttributes());
     }
 }

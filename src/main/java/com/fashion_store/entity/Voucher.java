@@ -7,6 +7,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -38,4 +40,7 @@ public class Voucher extends BaseModel {
     DiscountType discountType;
     BigDecimal maxDiscountValue;
     BigDecimal minOrderValue;
+
+    @OneToMany(mappedBy = "voucher")
+    List<Order> orders = new ArrayList<>();
 }

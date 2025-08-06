@@ -1,7 +1,7 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.JwtUtils;
-import com.fashion_store.Utils.TypeUser;
+import com.fashion_store.enums.TypeUser;
 import com.fashion_store.dto.request.*;
 import com.fashion_store.dto.response.AuthenticationResponse;
 import com.fashion_store.dto.response.CustomerResponse;

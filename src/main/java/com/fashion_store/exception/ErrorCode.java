@@ -78,9 +78,16 @@ public enum ErrorCode {
     INVALID_PRODUCT_ID(78, "Invalid product id", HttpStatus.BAD_REQUEST),
     INVALID_QUANTITY_UPDATE(79, "Excess request number already exists", HttpStatus.BAD_REQUEST),
     VARIANT_NOT_AVAILABLE(80, "Product not available", HttpStatus.BAD_REQUEST),
+    INVALID_PAYMENT_METHOD(81, "Invalid payment method", HttpStatus.BAD_REQUEST),
+    INVALID_ORDER_ITEM_LIST(82, "Order must have at least 1 product", HttpStatus.BAD_REQUEST),
+    VOUCHER_NOT_STARTED(83, "Voucher not applied yet", HttpStatus.BAD_REQUEST),
+    VOUCHER_USAGE_LIMIT_EXCEEDED(83, "Voucher has been used up", HttpStatus.BAD_REQUEST),
+    VOUCHER_EXPIRED(84, "Voucher has expired", HttpStatus.BAD_REQUEST),
+    INVALID_ORDER_STATUS(84, "Invalid order status", HttpStatus.BAD_REQUEST),
     PASSWORD_WEAK(75, "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character", HttpStatus.BAD_REQUEST);
 
     int code;
     String message;
     HttpStatusCode httpStatusCode;
+
 }

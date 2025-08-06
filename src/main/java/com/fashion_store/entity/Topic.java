@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +26,7 @@ public class Topic extends BaseModel {
     Boolean status;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
-    List<Post> posts;
+    List<Post> posts = new ArrayList<>();
 
     @Override
     public String toString() {
