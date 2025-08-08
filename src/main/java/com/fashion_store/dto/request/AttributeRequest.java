@@ -1,6 +1,5 @@
 package com.fashion_store.dto.request;
 
-import com.fashion_store.dto.component.AttributeValueItem;
 import com.fashion_store.validator.DisplayTypeConstraint;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +20,7 @@ public class AttributeRequest {
     @NotBlank(message = "INVALID_NAME")
     String name;
 
-    @DisplayTypeConstraint(message = "INVALID_TYPE")
+    @DisplayTypeConstraint
     @Builder.Default
     String displayType = "text";
 
@@ -31,5 +30,5 @@ public class AttributeRequest {
     @Size(min = 1, message = "INVALID_ATTRIBUTE_COUNT")
     @NotNull(message = "INVALID_ATTRIBUTE_COUNT")
     @Valid
-    List<AttributeValueItem> listAttributeValue;
+    List<AttributeValueItemRequest> listAttributeValue;
 }

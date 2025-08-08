@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse {
-    Long id;
+    String id;
     String phone;
     String address;
     String city;
@@ -24,6 +25,8 @@ public class OrderResponse {
     String note;
     String paymentMethod;
     Boolean isDeleted;
+    boolean isPaid;
+    LocalDateTime paidAt;
     OrderStatus orderStatus;
     BigDecimal totalAmount;
     BigDecimal totalDiscount;

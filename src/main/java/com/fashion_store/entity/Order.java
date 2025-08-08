@@ -22,9 +22,10 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    boolean isPaid;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+    @Builder.Default
+    boolean isPaid = false;
     LocalDateTime paidAt;
     @Column(nullable = false)
     BigDecimal totalAmount;
@@ -49,6 +50,7 @@ public class Order extends BaseModel {
     @Column(nullable = false)
     String ward;
     String note;
+    String transactionRef;
 
     String voucherName;
     DiscountType discountType;

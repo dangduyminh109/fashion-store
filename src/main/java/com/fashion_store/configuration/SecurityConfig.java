@@ -29,7 +29,8 @@ public class SecurityConfig {
             "/auth/oauth2/success",
             "/oauth2/**",
             "/auth/**",
-            "/order/client/create"
+            "/order/client/create",
+            "/payment/**"
     };
 
     @Value("${jwt.signerKey}")

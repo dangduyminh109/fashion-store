@@ -1,7 +1,7 @@
 package com.fashion_store.service;
 
 import com.fashion_store.dto.request.AttributeRequest;
-import com.fashion_store.dto.component.AttributeValueItem;
+import com.fashion_store.dto.request.AttributeValueItemRequest;
 import com.fashion_store.dto.response.AttributeResponse;
 import com.fashion_store.entity.Attribute;
 import com.fashion_store.entity.AttributeValue;
@@ -11,7 +11,6 @@ import com.fashion_store.exception.ErrorCode;
 import com.fashion_store.mapper.AttributeMapper;
 import com.fashion_store.mapper.AttributeValueMapper;
 import com.fashion_store.repository.AttributeRepository;
-import com.fashion_store.repository.AttributeValueRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -56,7 +55,7 @@ public class AttributeService extends GenerateService<Attribute, Long> {
 
         List<AttributeValue> attributeValues = new ArrayList<>();
         for (int i = 0; i < request.getListAttributeValue().size(); i++) {
-            AttributeValueItem item = request.getListAttributeValue().get(i);
+            AttributeValueItemRequest item = request.getListAttributeValue().get(i);
             AttributeValue attributeValueItem = attributeValueMapper.toAttributeValue(item);
             attributeValueItem.setAttribute(attribute);
             // handle image
@@ -135,7 +134,7 @@ public class AttributeService extends GenerateService<Attribute, Long> {
         // cập nhật list attribute value
         List<AttributeValue> newAttributeValues = new ArrayList<>();
         for (int i = 0; i < request.getListAttributeValue().size(); i++) {
-            AttributeValueItem item = request.getListAttributeValue().get(i);
+            AttributeValueItemRequest item = request.getListAttributeValue().get(i);
             AttributeValue attributeValue = attributeValueMapper.toAttributeValue(item);
             if (item.getId() == null) {
                 attributeValue.setAttribute(attribute);

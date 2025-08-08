@@ -1,4 +1,4 @@
-package com.fashion_store.dto.component;
+package com.fashion_store.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AttributeValueItem {
+public class AttributeValueItemRequest {
     @NotBlank(message = "INVALID_VALUE")
     String value;
     Long id;

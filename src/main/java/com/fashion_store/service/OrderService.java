@@ -33,19 +33,17 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class OrderService extends GenerateService<Order, Long> {
+public class OrderService extends GenerateService<Order, String> {
     OrderRepository orderRepository;
     OrderMapper orderMapper;
-    CloudinaryService cloudinaryService;
     OrderItemMapper orderItemMapper;
     CustomerRepository customerRepository;
     VoucherRepository voucherRepository;
     VariantRepository variantRepository;
-    OrderItemRepository orderItemRepository;
     CustomerMapper customerMapper;
 
     @Override
-    JpaRepository<Order, Long> getRepository() {
+    JpaRepository<Order, String> getRepository() {
         return orderRepository;
     }
 
@@ -56,7 +54,7 @@ public class OrderService extends GenerateService<Order, Long> {
                 .collect(Collectors.toList());
     }
 
-    public OrderResponse getInfo(Long id) {
+    public OrderResponse getInfo(String id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         return orderMapper.toOrderResponse(order);
     }
@@ -64,15 +62,17 @@ public class OrderService extends GenerateService<Order, Long> {
     @Transactional(rollbackFor = Exception.class)
     public OrderResponse createClient(OrderCreateRequest request) {
         String customerId = SecurityUtils.getCurrentUserId();
-        return createOrder(request, customerId);
+        Order order = createOrder(request, customerId);
+        return orderMapper.toOrderResponse(order);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public OrderResponse create(OrderCreateRequest request) {
-        return createOrder(request, request.getCustomerId());
+        Order order = createOrder(request, request.getCustomerId());
+        return orderMapper.toOrderResponse(order);
     }
 
-    private OrderResponse createOrder(OrderCreateRequest request, String customerId) {
+    public Order createOrder(OrderCreateRequest request, String customerId) {
         Order order = orderMapper.toOrder(request);
         if (customerId != null && !customerId.isBlank() && !customerId.equals("anonymousUser")) {
             Customer customer = customerRepository.findById(request.getCustomerId())
@@ -157,10 +157,10 @@ public class OrderService extends GenerateService<Order, Long> {
         );
 
         order = orderRepository.save(order);
-        return orderMapper.toOrderResponse(order);
+        return order;
     }
 
-    public OrderResponse update(OrderUpdateRequest request, Long id) {
+    public OrderResponse update(OrderUpdateRequest request, String id) {
         final Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
 
@@ -287,7 +287,7 @@ public class OrderService extends GenerateService<Order, Long> {
         return orderMapper.toOrderResponse(order);
     }
 
-    public void status(Long id, String status) {
+    public void status(String id, String status) {
         try {
             Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
             order.setOrderStatus(OrderStatus.valueOf(status.toUpperCase().trim()));

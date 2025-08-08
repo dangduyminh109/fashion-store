@@ -84,6 +84,9 @@ public enum ErrorCode {
     VOUCHER_USAGE_LIMIT_EXCEEDED(83, "Voucher has been used up", HttpStatus.BAD_REQUEST),
     VOUCHER_EXPIRED(84, "Voucher has expired", HttpStatus.BAD_REQUEST),
     INVALID_ORDER_STATUS(84, "Invalid order status", HttpStatus.BAD_REQUEST),
+    PAID_ORDER(84, "Order has been paid", HttpStatus.BAD_REQUEST),
+    NOT_AUTHORIZED_ORDER_ACCESS(85, "You are not authorized to access this order.", HttpStatus.FORBIDDEN),
+    INVALID_SIGNATURE(85, "Invalid signature", HttpStatus.BAD_REQUEST),
     PASSWORD_WEAK(75, "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character", HttpStatus.BAD_REQUEST);
 
     int code;

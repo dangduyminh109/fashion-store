@@ -2,7 +2,7 @@ package com.fashion_store.mapper;
 
 import com.fashion_store.dto.request.AttributeValueRequest;
 import com.fashion_store.dto.request.AttributeValueUpdateRequest;
-import com.fashion_store.dto.component.AttributeValueItem;
+import com.fashion_store.dto.request.AttributeValueItemRequest;
 import com.fashion_store.dto.response.AttributeValueResponse;
 import com.fashion_store.entity.AttributeValue;
 import org.mapstruct.Mapper;
@@ -16,7 +16,7 @@ public interface AttributeValueMapper {
     AttributeValue toAttributeValue(AttributeValueRequest attributeValueRequest);
 
     @Mapping(target = "image", ignore = true)
-    AttributeValue toAttributeValue(AttributeValueItem attributeValueUpdateRequest);
+    AttributeValue toAttributeValue(AttributeValueItemRequest attributeValueUpdateRequest);
 
     @Mapping(target = "attributeId", expression = "java(attributeValue.getAttribute() != null ? attributeValue.getAttribute().getId() : null)")
     @Mapping(target = "attributeName", source = "attribute.name")
@@ -26,5 +26,5 @@ public interface AttributeValueMapper {
     void updateAttributeValue(@MappingTarget AttributeValue attributeValue, AttributeValueUpdateRequest attributeValueUpdateRequest);
 
     @Mapping(target = "image", ignore = true)
-    void updateAttributeValue(@MappingTarget AttributeValue attributeValue, AttributeValueItem attributeValueItem);
+    void updateAttributeValue(@MappingTarget AttributeValue attributeValue, AttributeValueItemRequest attributeValueItemRequest);
 }
