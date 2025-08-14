@@ -37,9 +37,10 @@ public class SupplierService extends GenerateService<Supplier, Long> {
         return supplierMapper.toSupplierResponse(supplier);
     }
 
-    public List<SupplierResponse> getAll() {
+    public List<SupplierResponse> getAll(boolean deleted) {
         return supplierRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(supplierMapper::toSupplierResponse)
                 .collect(Collectors.toList());
     }

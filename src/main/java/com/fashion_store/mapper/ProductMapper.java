@@ -19,6 +19,7 @@ public interface ProductMapper {
     @Mapping(target = "categoryName", expression = "java(product.getCategory() != null ? product.getCategory().getName() : null)")
     @Mapping(target = "categoryId", expression = "java(product.getCategory() != null ? product.getCategory().getId() : null)")
     @Mapping(target = "productImages", expression = "java(product.getProductImages() != null ? product.getProductImages().stream().map(img->img.getUrl()).toList() : null)")
+    @Mapping(target = "variants.attributeValues", ignore = true)
     @Transactional
     ProductResponse toProductResponse(Product product);
 

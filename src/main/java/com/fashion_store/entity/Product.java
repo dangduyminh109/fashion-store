@@ -1,6 +1,5 @@
 package com.fashion_store.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +23,9 @@ public class Product extends BaseModel {
     @Column(nullable = false)
     String name;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(columnDefinition = "LONGTEXT")
     String description;
 
     @Column(nullable = false, unique = true)

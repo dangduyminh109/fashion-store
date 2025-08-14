@@ -18,7 +18,9 @@ public class Post extends BaseModel {
     Long id;
     @Column(nullable = false)
     String title;
-    @Column(nullable = false)
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(columnDefinition = "LONGTEXT", nullable = false)
     String content;
     String image;
     @Column(nullable = false, unique = true)

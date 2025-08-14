@@ -28,9 +28,11 @@ public class OrderController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ORDER_VIEW')")
-    public ApiResponse<List<OrderResponse>> getAll() {
+    public ApiResponse<List<OrderResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<OrderResponse>>builder()
-                .result(orderService.getAll())
+                .result(orderService.getAll(deleted))
                 .build();
     }
 

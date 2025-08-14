@@ -56,7 +56,7 @@ public class PaymentService {
         )
             throw new AppException(ErrorCode.NOT_AUTHORIZED_ORDER_ACCESS);
 
-        if (order.isPaid())
+        if (order.getIsPaid())
             throw new AppException(ErrorCode.PAID_ORDER);
 
         String transactionRef = getRandomNumber(8);
@@ -86,7 +86,7 @@ public class PaymentService {
             if ("00".equals(responseCode)) {
                 Order order = orderRepository.findByTransactionRef(transactionRef)
                         .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
-                order.setPaid(true);
+                order.setIsPaid(true);
                 order.setPaidAt(LocalDateTime.now());
                 orderRepository.save(order);
                 return true;

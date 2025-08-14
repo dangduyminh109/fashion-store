@@ -18,8 +18,9 @@ public interface AttributeValueMapper {
     @Mapping(target = "image", ignore = true)
     AttributeValue toAttributeValue(AttributeValueItemRequest attributeValueUpdateRequest);
 
-    @Mapping(target = "attributeId", expression = "java(attributeValue.getAttribute() != null ? attributeValue.getAttribute().getId() : null)")
+    @Mapping(target = "attributeId", source = "attribute.id")
     @Mapping(target = "attributeName", source = "attribute.name")
+    @Mapping(target = "displayType", source = "attribute.displayType")
     AttributeValueResponse toAttributeValueResponse(AttributeValue attributeValue);
 
     @Mapping(target = "image", ignore = true)

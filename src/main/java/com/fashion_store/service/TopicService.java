@@ -48,9 +48,10 @@ public class TopicService extends GenerateService<Topic, Long> {
         return topicMapper.toTopicResponse(topic);
     }
 
-    public List<TopicResponse> getAll() {
+    public List<TopicResponse> getAll(boolean deleted) {
         return topicRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(topicMapper::toTopicResponse)
                 .collect(Collectors.toList());
     }

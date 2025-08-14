@@ -3,6 +3,7 @@ package com.fashion_store.controller;
 import com.fashion_store.dto.request.ProductCreateRequest;
 import com.fashion_store.dto.request.ProductUpdateRequest;
 import com.fashion_store.dto.response.ApiResponse;
+import com.fashion_store.dto.response.ProductFromCategoryResponse;
 import com.fashion_store.dto.response.ProductResponse;
 import com.fashion_store.service.ProductService;
 import jakarta.validation.Valid;
@@ -21,13 +22,45 @@ import java.util.List;
 public class ProductController {
     ProductService productService;
 
-    @GetMapping()
-    @PreAuthorize("hasAuthority('PRODUCT_VIEW')")
+    @GetMapping("/getAll")
     public ApiResponse<List<ProductResponse>> getAll() {
         return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getAll())
+                .result(productService.getProduct())
                 .build();
     }
+
+    @GetMapping("/category/{slug}")
+    public ApiResponse<ProductFromCategoryResponse> getByCategory(@PathVariable String slug) {
+        return ApiResponse.<ProductFromCategoryResponse>builder()
+                .result(productService.getByCategory(slug))
+                .build();
+    }
+
+    @GetMapping("/info/slug/{slug}")
+    public ApiResponse<ProductResponse> getInfoBySlug(@PathVariable String slug) {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.getInfoBySlug(slug))
+                .build();
+    }
+
+    @GetMapping("/variant/{id}")
+    public ApiResponse<ProductResponse> getVariant(@PathVariable Long id) {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.getVariant(id))
+                .build();
+    }
+
+    @GetMapping()
+    @PreAuthorize("hasAuthority('PRODUCT_VIEW')")
+    public ApiResponse<List<ProductResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted,
+            @RequestParam(value = "name", required = false) String name
+    ) {
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result(productService.getAll(deleted, name))
+                .build();
+    }
+
 
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('PRODUCT_VIEW')")
@@ -77,6 +110,15 @@ public class ProductController {
     @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
     public ApiResponse<Void> status(@PathVariable Long id) {
         productService.status(id);
+        return ApiResponse.<Void>builder()
+                .message("Cập nhật trạng thái thành công")
+                .build();
+    }
+
+    @PatchMapping("/variant/status/{id}")
+    @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
+    public ApiResponse<Void> statusVariant(@PathVariable Long id) {
+        productService.statusVariant(id);
         return ApiResponse.<Void>builder()
                 .message("Cập nhật trạng thái thành công")
                 .build();

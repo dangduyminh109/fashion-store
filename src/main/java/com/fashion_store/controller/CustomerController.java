@@ -23,11 +23,21 @@ import java.util.List;
 public class CustomerController {
     CustomerService customerService;
 
+    @GetMapping("/myInfo")
+    public ApiResponse<CustomerResponse> getMyInfo() {
+        return ApiResponse.<CustomerResponse>builder()
+                .result(customerService.getMyInfo())
+                .build();
+    }
+
     @GetMapping()
     @PreAuthorize("hasAuthority('CUSTOMER_VIEW')")
-    public ApiResponse<List<CustomerResponse>> getAll() {
+    public ApiResponse<List<CustomerResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted,
+            @RequestParam(value = "name", required = false) String name
+    ) {
         return ApiResponse.<List<CustomerResponse>>builder()
-                .result(customerService.getAll())
+                .result(customerService.getAll(deleted, name))
                 .build();
     }
 

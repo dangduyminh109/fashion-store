@@ -1,5 +1,6 @@
 package com.fashion_store.dto.response;
 
+import com.fashion_store.enums.AttributeDisplayType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,4 +16,5 @@ public class AttributeValueResponse {
     String image;
     Long attributeId;
     String attributeName;
+    AttributeDisplayType displayType;
 }

@@ -25,9 +25,11 @@ public class UserController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('USER_VIEW')")
-    public ApiResponse<List<UserResponse>> getAll() {
+    public ApiResponse<List<UserResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<UserResponse>>builder()
-                .result(userService.getAll())
+                .result(userService.getAll(deleted))
                 .build();
     }
 

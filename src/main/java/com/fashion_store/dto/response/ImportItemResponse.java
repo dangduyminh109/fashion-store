@@ -18,4 +18,5 @@ public class ImportItemResponse {
     BigDecimal discountAmount;
     String sku;
     String productName;
+    String displayName;
 }

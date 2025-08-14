@@ -25,7 +25,7 @@ public class OrderResponse {
     String note;
     String paymentMethod;
     Boolean isDeleted;
-    boolean isPaid;
+    Boolean isPaid;
     LocalDateTime paidAt;
     OrderStatus orderStatus;
     BigDecimal totalAmount;

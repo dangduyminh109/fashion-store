@@ -48,4 +48,19 @@ public class AddressController {
                 .message("Địa chỉ đã bị xóa vĩnh viễn")
                 .build();
     }
+
+    @GetMapping("/provinces")
+    public String getProvinces() {
+        return addressService.getProvinces();
+    }
+
+    @GetMapping("/districts/{provinceCode}")
+    public String getDistricts(@PathVariable String provinceCode) {
+        return addressService.getDistricts(provinceCode);
+    }
+
+    @GetMapping("/wards/{districtCode}")
+    public String getWards(@PathVariable String districtCode) {
+        return addressService.getWards(districtCode);
+    }
 }

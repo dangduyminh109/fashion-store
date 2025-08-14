@@ -3,6 +3,7 @@ package com.fashion_store.controller;
 import com.fashion_store.dto.request.CategoryRequest;
 import com.fashion_store.dto.response.ApiResponse;
 import com.fashion_store.dto.response.CategoryResponse;
+import com.fashion_store.dto.response.CategoryTreeResponse;
 import com.fashion_store.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -22,11 +23,22 @@ import java.util.List;
 public class CategoryController {
     CategoryService categoryService;
 
+    @GetMapping("/getTree")
+    public ApiResponse<List<CategoryTreeResponse>> getTree(
+            @RequestParam(value = "id", required = false) Long id
+    ) {
+        return ApiResponse.<List<CategoryTreeResponse>>builder()
+                .result(categoryService.getTree(id))
+                .build();
+    }
+
     @GetMapping()
     @PreAuthorize("hasAuthority('CATEGORY_VIEW')")
-    public ApiResponse<List<CategoryResponse>> getAll() {
+    public ApiResponse<List<CategoryResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<CategoryResponse>>builder()
-                .result(categoryService.getAll())
+                .result(categoryService.getAll(deleted))
                 .build();
     }
 

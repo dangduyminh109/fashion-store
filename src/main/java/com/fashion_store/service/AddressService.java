@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class AddressService extends GenerateService<Address, Long> {
     AddressRepository addressRepository;
     AddressMapper addressMapper;
     CustomerRepository customerRepository;
+    private RestTemplate restTemplate;
 
     @Override
     JpaRepository<Address, Long> getRepository() {
@@ -83,5 +85,21 @@ public class AddressService extends GenerateService<Address, Long> {
             firstAddress.setIsDefault(true);
             addressRepository.save(firstAddress);
         }
+    }
+
+    // lấy data địa chỉ từ api ngoài
+    public String getProvinces() {
+        String url = "https://provinces.open-api.vn/api/p/";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+    public String getDistricts(String provinceCode) {
+        String url = "https://provinces.open-api.vn/api/p/" + provinceCode + "?depth=2";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+    public String getWards(String districtCode) {
+        String url = "https://provinces.open-api.vn/api/d/" + districtCode + "?depth=2";
+        return restTemplate.getForObject(url, String.class);
     }
 }

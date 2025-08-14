@@ -5,11 +5,12 @@ import com.fashion_store.dto.request.ProductUpdateRequest;
 import com.fashion_store.dto.request.VariantCreateRequest;
 import com.fashion_store.dto.request.ProductCreateRequest;
 import com.fashion_store.dto.request.VariantUpdateRequest;
-import com.fashion_store.dto.response.ProductResponse;
+import com.fashion_store.dto.response.*;
 import com.fashion_store.entity.*;
 import com.fashion_store.entity.Product;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;
+import com.fashion_store.mapper.CategoryMapper;
 import com.fashion_store.mapper.ProductMapper;
 import com.fashion_store.mapper.VariantMapper;
 import com.fashion_store.repository.*;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
@@ -34,8 +36,9 @@ public class ProductService extends GenerateService<Product, Long> {
 
     ProductMapper productMapper;
     VariantMapper variantMapper;
-    private final AttributeValueRepository attributeValueRepository;
-    private final VariantRepository variantRepository;
+    CategoryMapper categoryMapper;
+    AttributeValueRepository attributeValueRepository;
+    VariantRepository variantRepository;
 
     @Override
     JpaRepository<Product, Long> getRepository() {
@@ -122,12 +125,187 @@ public class ProductService extends GenerateService<Product, Long> {
         return productMapper.toProductResponse(product);
     }
 
-
-    public List<ProductResponse> getAll() {
+    public List<ProductResponse> getProduct() {
         return productRepository.findAll()
                 .stream()
-                .map(productMapper::toProductResponse)
+                .filter(item -> item.getIsDeleted() == false && item.getStatus() == true)
+                .map(item -> {
+                    // Map sang DTO bằng mapper
+                    ProductResponse response = productMapper.toProductResponse(item);
+
+                    // Nếu không có variants thì trả luôn
+                    if (response == null || response.getVariants() == null || item.getVariants() == null) {
+                        return response;
+                    }
+
+                    Map<Long, Variant> variantEntityById = item.getVariants().stream()
+                            .filter(v -> v.getId() != null)
+                            .collect(Collectors.toMap(
+                                    Variant::getId,
+                                    v -> v,
+                                    (existing, replacement) -> existing // giữ bản đầu khi trùng id
+                            ));
+
+                    // Duyệt từng variant DTO, tìm entity tương ứng và gán attribute fields
+                    response.getVariants().forEach(variantResponse -> {
+                        if (variantResponse == null) return;
+
+                        Long variantId = variantResponse.getId();
+                        Variant variantEntity = variantEntityById.get(variantId);
+                        if (variantEntity == null || variantEntity.getAttributeValues() == null) return;
+
+                        // Map attributeValueId -> AttributeValue entity
+                        Map<Long, AttributeValue> attrValEntityById = variantEntity.getAttributeValues().stream()
+                                .filter(av -> av.getId() != null)
+                                .collect(Collectors.toMap(AttributeValue::getId, av -> av));
+
+                        if (variantResponse.getAttributeValues() == null) return;
+
+                        variantResponse.getAttributeValues().forEach(attrValResp -> {
+                            if (attrValResp == null) return;
+
+                            Long attrValId = attrValResp.getId();
+                            AttributeValue attrValEntity = attrValEntityById.get(attrValId);
+                            if (attrValEntity == null) return;
+
+                            if (attrValEntity.getAttribute() != null) {
+                                attrValResp.setAttributeId(attrValEntity.getAttribute().getId());
+                                attrValResp.setAttributeName(attrValEntity.getAttribute().getName());
+                                attrValResp.setDisplayType(attrValEntity.getAttribute().getDisplayType());
+                            }
+                        });
+                    });
+
+                    return response;
+                })
                 .collect(Collectors.toList());
+    }
+
+    public ProductResponse getVariant(Long id) {
+        Variant variant = variantRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+
+        Product product = variant.getProduct();
+
+        Product copyProduct = new Product();
+        copyProduct.setId(product.getId());
+        copyProduct.setName(product.getName());
+        copyProduct.setCategory(product.getCategory());
+        copyProduct.setDescription(product.getDescription());
+        copyProduct.setProductImages(new ArrayList<>(product.getProductImages()));
+        copyProduct.setSlug(product.getSlug());
+        copyProduct.setBrand(product.getBrand());
+
+        List<Variant> resultVariant = product.getVariants().stream()
+                .filter(v -> Objects.equals(v.getId(), id))
+                .toList();
+
+        copyProduct.setVariants(new ArrayList<>(resultVariant));
+        return productMapper.toProductResponse(copyProduct);
+    }
+
+    public List<ProductResponse> getAll(boolean deleted, String name) {
+        return productRepository.findAll() // đây là findAll() đã được @EntityGraph
+                .stream()
+                .filter(item -> {
+                    if (name != null && !name.trim().isEmpty()) {
+                        return item.getName().trim().toLowerCase().contains(name.toLowerCase())
+                                && Boolean.TRUE.equals(item.getIsDeleted()) == deleted;
+                    }
+                    return Boolean.TRUE.equals(item.getIsDeleted()) == deleted;
+                })
+                .map(item -> {
+                    // Map sang DTO bằng mapper
+                    ProductResponse response = productMapper.toProductResponse(item);
+
+                    // Nếu không có variants thì trả luôn
+                    if (response == null || response.getVariants() == null || item.getVariants() == null) {
+                        return response;
+                    }
+
+                    Map<Long, Variant> variantEntityById = item.getVariants().stream()
+                            .filter(v -> v.getId() != null)
+                            .collect(Collectors.toMap(
+                                    Variant::getId,
+                                    v -> v,
+                                    (existing, replacement) -> existing // giữ bản đầu khi trùng id
+                            ));
+
+                    // Duyệt từng variant DTO, tìm entity tương ứng và gán attribute fields
+                    response.getVariants().forEach(variantResponse -> {
+                        if (variantResponse == null) return;
+
+                        Long variantId = variantResponse.getId();
+                        Variant variantEntity = variantEntityById.get(variantId);
+                        if (variantEntity == null || variantEntity.getAttributeValues() == null) return;
+
+                        // Map attributeValueId -> AttributeValue entity
+                        Map<Long, AttributeValue> attrValEntityById = variantEntity.getAttributeValues().stream()
+                                .filter(av -> av.getId() != null)
+                                .collect(Collectors.toMap(AttributeValue::getId, av -> av));
+
+                        if (variantResponse.getAttributeValues() == null) return;
+
+                        variantResponse.getAttributeValues().forEach(attrValResp -> {
+                            if (attrValResp == null) return;
+
+                            Long attrValId = attrValResp.getId();
+                            AttributeValue attrValEntity = attrValEntityById.get(attrValId);
+                            if (attrValEntity == null) return;
+
+                            if (attrValEntity.getAttribute() != null) {
+                                attrValResp.setAttributeId(attrValEntity.getAttribute().getId());
+                                attrValResp.setAttributeName(attrValEntity.getAttribute().getName());
+                                attrValResp.setDisplayType(attrValEntity.getAttribute().getDisplayType());
+                            }
+                        });
+                    });
+
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ProductFromCategoryResponse getByCategory(String slug) {
+        Category root = categoryRepository.findBySlug(slug)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+
+        // thu tất cả category (gồm root + descendants)
+        List<Category> all = new ArrayList<>();
+        collectDescendants(root, all);
+
+        // gom products từ mọi category
+        List<ProductResponse> resultProduct = all.stream()
+                .filter(c -> c.getProducts() != null)
+                .flatMap(c -> c.getProducts().stream())
+                .distinct() // cần equals/hashCode trên Product nếu muốn loại trùng
+                .map(productMapper::toProductResponse)
+                .toList();
+
+        CategoryResponse resultCategory = categoryMapper.toCategoryResponse(root);
+        return ProductFromCategoryResponse.builder()
+                .category(resultCategory)
+                .products(resultProduct)
+                .build();
+    }
+
+    private void collectDescendants(Category c, List<Category> out) {
+        out.add(c);
+        if (c.getChildren() == null) return;
+        for (Category ch : c.getChildren()) {
+            collectDescendants(ch, out);
+        }
+    }
+
+    public ProductResponse getInfoBySlug(String slug) {
+        Product product = productRepository.findBySlug(slug).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+        if (product.getIsDeleted() == true)
+            throw new AppException(ErrorCode.NOT_EXIST);
+        ProductResponse response = productMapper.toProductResponse(product);
+        // Fill attribute info giống như getAll
+        fillAttributeInfoFromEntity(product, response);
+        return response;
     }
 
     public ProductResponse getInfo(Long id) {
@@ -299,6 +477,16 @@ public class ProductService extends GenerateService<Product, Long> {
         }
     }
 
+    public void statusVariant(Long id) {
+        Variant variant = variantRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+        try {
+            variant.setStatus(variant.getStatus() == null || !variant.getStatus());
+            variantRepository.save(variant);
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
+        }
+    }
+
     public void featured(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
         try {
@@ -308,4 +496,37 @@ public class ProductService extends GenerateService<Product, Long> {
             throw new AppException(ErrorCode.INTERNAL_EXCEPTION);
         }
     }
+
+    private void fillAttributeInfoFromEntity(Product product, ProductResponse response) {
+        if (response == null || response.getVariants() == null || product.getVariants() == null) return;
+
+        // build map variantId -> Variant (avoid duplicate keys)
+        Map<Long, Variant> variantEntityById = new HashMap<>();
+        for (Variant v : product.getVariants()) {
+            if (v != null && v.getId() != null) variantEntityById.putIfAbsent(v.getId(), v);
+        }
+
+        for (VariantResponse vr : response.getVariants()) {
+            if (vr == null) continue;
+            Variant variantEntity = variantEntityById.get(vr.getId());
+            if (variantEntity == null || variantEntity.getAttributeValues() == null) continue;
+
+            Map<Long, AttributeValue> attrValById = new HashMap<>();
+            for (AttributeValue av : variantEntity.getAttributeValues()) {
+                if (av != null && av.getId() != null) attrValById.putIfAbsent(av.getId(), av);
+            }
+
+            if (vr.getAttributeValues() == null) continue;
+            for (AttributeValueResponse avr : vr.getAttributeValues()) {
+                if (avr == null) continue;
+                AttributeValue avEntity = attrValById.get(avr.getId());
+                if (avEntity == null || avEntity.getAttribute() == null) continue;
+
+                avr.setAttributeId(avEntity.getAttribute().getId());
+                avr.setAttributeName(avEntity.getAttribute().getName());
+                avr.setDisplayType(avEntity.getAttribute().getDisplayType());
+            }
+        }
+    }
+
 }

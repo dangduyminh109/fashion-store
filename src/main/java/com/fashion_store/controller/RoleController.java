@@ -3,6 +3,7 @@ package com.fashion_store.controller;
 import com.fashion_store.dto.request.RoleRequest;
 import com.fashion_store.dto.request.UpdateRolePermissionsRequest;
 import com.fashion_store.dto.response.ApiResponse;
+import com.fashion_store.dto.response.PermissionResponse;
 import com.fashion_store.dto.response.RoleResponse;
 import com.fashion_store.service.RoleService;
 import jakarta.validation.Valid;
@@ -23,9 +24,11 @@ public class RoleController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ROLE_VIEW')")
-    public ApiResponse<List<RoleResponse>> getAll() {
+    public ApiResponse<List<RoleResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<RoleResponse>>builder()
-                .result(roleService.getAll())
+                .result(roleService.getAll(deleted))
                 .build();
     }
 
@@ -55,8 +58,16 @@ public class RoleController {
                 .build();
     }
 
+    @GetMapping("/permission")
+    @PreAuthorize("hasAuthority('PERMISSION_UPDATE')")
+    public ApiResponse<List<PermissionResponse>> getPermission() {
+        return ApiResponse.<List<PermissionResponse>>builder()
+                .result(roleService.getPermission())
+                .build();
+    }
+
     @PutMapping("/update-permissions")
-    @PreAuthorize("hasAuthority('ROLE_UPDATE')")
+    @PreAuthorize("hasAuthority('PERMISSION_UPDATE')")
     public ApiResponse<Void> updatePermissionsForRoles(@RequestBody @Valid UpdateRolePermissionsRequest request) {
         roleService.updatePermissionsForRoles(request);
         return ApiResponse.<Void>builder()

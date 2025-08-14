@@ -30,8 +30,8 @@ public class paymentController {
     public void handleVNPayReturn(HttpServletRequest request, HttpServletResponse response) throws IOException {
         boolean isSuccess = paymentService.handleVNPayReturn(request, response);
         if (isSuccess)
-            response.sendRedirect("http://localhost:5500/test2/payment-success.html");
+            response.sendRedirect("http://localhost:5173/success");
         else
-            response.sendRedirect("http://localhost:5500/test2/payment-error.html");
+            response.sendRedirect("http://localhost:5173/error");
     }
 }

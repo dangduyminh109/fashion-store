@@ -22,9 +22,11 @@ public class SupplierController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('SUPPLIER_VIEW')")
-    public ApiResponse<List<SupplierResponse>> getAll() {
+    public ApiResponse<List<SupplierResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<SupplierResponse>>builder()
-                .result(supplierService.getAll())
+                .result(supplierService.getAll(deleted))
                 .build();
     }
 

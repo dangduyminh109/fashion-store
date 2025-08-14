@@ -28,6 +28,7 @@ public class OrderUpdateRequest {
     @PaymentMethodConstraint
     String paymentMethod;
     String orderStatus;
+    Boolean isPaid;
     @Valid
     @Size(min = 1, message = "INVALID_ORDER_ITEM_LIST")
     List<OrderItemRequest> orderItems;

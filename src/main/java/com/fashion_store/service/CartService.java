@@ -65,6 +65,49 @@ public class CartService {
 
         if (itemExisted.isPresent()) {
             cartItem = itemExisted.get();
+            cartItem.setQuantity(request.getQuantity() + cartItem.getQuantity());
+        } else {
+            cartItem.setVariant(variant);
+            cartItem.setQuantity(request.getQuantity());
+        }
+        cartItem.setCart(cart);
+
+        cartItem = cartItemRepository.save(cartItem);
+        cartRepository.save(cart);
+        return cartItemMapper.toCartItemResponse(cartItem);
+    }
+
+    public CartItemResponse update(CartItemRequest request) {
+        String customerId = SecurityUtils.getCurrentUserId();
+        if (customerId == null)
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+
+        Cart cart = customer.getCart();
+        if (cart == null) {
+            cart = new Cart();
+            cart.setCustomer(customer);
+            cart = cartRepository.save(cart);
+            customer.setCart(cart);
+            customerRepository.save(customer);
+        }
+
+        CartItem cartItem = cartItemMapper.toCartItem(request);
+        Variant variant = variantRepository.findById(request.getVariantId())
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+        if (variant.getStatus() == false && variant.getIsDeleted() != true)
+            throw new AppException(ErrorCode.VARIANT_NOT_AVAILABLE);
+        if (variant.getInventory() < request.getQuantity())
+            throw new AppException(ErrorCode.INVALID_QUANTITY_UPDATE);
+
+        Optional<CartItem> itemExisted = cart.getCartItems().stream()
+                .filter(item -> item.getVariant().getId().equals(variant.getId()))
+                .findFirst();
+
+        if (itemExisted.isPresent()) {
+            cartItem = itemExisted.get();
             cartItem.setQuantity(request.getQuantity());
         } else {
             cartItem.setVariant(variant);

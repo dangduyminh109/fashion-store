@@ -24,9 +24,11 @@ public class TopicController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('TOPIC_VIEW')")
-    public ApiResponse<List<TopicResponse>> getAll() {
+    public ApiResponse<List<TopicResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<TopicResponse>>builder()
-                .result(topicService.getAll())
+                .result(topicService.getAll(deleted))
                 .build();
     }
 

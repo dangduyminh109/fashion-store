@@ -23,6 +23,6 @@ public class ImportItemRequest {
 
     BigDecimal discountAmount;
 
-    @NotNull(message = "INVALID_VARIANT_ID")
-    Long variantId;
+    @NotNull(message = "INVALID_VARIANT_SKU")
+    String sku;
 }

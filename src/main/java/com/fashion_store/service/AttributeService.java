@@ -87,9 +87,10 @@ public class AttributeService extends GenerateService<Attribute, Long> {
         return response;
     }
 
-    public List<AttributeResponse> getAll() {
+    public List<AttributeResponse> getAll(boolean deleted) {
         return attributeRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(attribute -> {
                     AttributeResponse response = attributeMapper.toAttributeResponse(attribute);
                     response.setAttributeDisplayType(attribute.getDisplayType());

@@ -21,11 +21,21 @@ import java.util.List;
 public class VoucherController {
     VoucherService voucherService;
 
-    @GetMapping()
-    @PreAuthorize("hasAuthority('VOUCHER_VIEW')")
+    @GetMapping("/getAll")
     public ApiResponse<List<VoucherResponse>> getAll() {
         return ApiResponse.<List<VoucherResponse>>builder()
-                .result(voucherService.getAll())
+                .result(voucherService.getVoucher())
+                .build();
+    }
+
+    @GetMapping()
+    @PreAuthorize("hasAuthority('VOUCHER_VIEW')")
+    public ApiResponse<List<VoucherResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted,
+            @RequestParam(value = "name", required = false) String name
+    ) {
+        return ApiResponse.<List<VoucherResponse>>builder()
+                .result(voucherService.getAll(deleted, name))
                 .build();
     }
 

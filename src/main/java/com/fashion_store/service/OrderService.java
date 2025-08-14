@@ -47,9 +47,9 @@ public class OrderService extends GenerateService<Order, String> {
         return orderRepository;
     }
 
-    public List<OrderResponse> getAll() {
+    public List<OrderResponse> getAll(boolean deleted) {
         return orderRepository.findAll()
-                .stream()
+                .stream().filter(item -> item.getIsDeleted() == deleted)
                 .map(orderMapper::toOrderResponse)
                 .collect(Collectors.toList());
     }
@@ -92,9 +92,9 @@ public class OrderService extends GenerateService<Order, String> {
         if (request.getVoucherId() != null) {
             Voucher voucher = voucherRepository.findById(request.getVoucherId())
                     .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
-            if (voucher.getStartDate().isAfter(LocalDateTime.now()))
+            if (voucher.getStartDate() != null && voucher.getStartDate().isAfter(LocalDateTime.now()))
                 throw new AppException(ErrorCode.VOUCHER_NOT_STARTED);
-            if (voucher.getEndDate().isBefore(LocalDateTime.now()))
+            if (voucher.getEndDate() != null && voucher.getEndDate().isBefore(LocalDateTime.now()))
                 throw new AppException(ErrorCode.VOUCHER_EXPIRED);
             if ((long) voucher.getOrders().size() >= voucher.getQuantity())
                 throw new AppException(ErrorCode.VOUCHER_USAGE_LIMIT_EXCEEDED);
@@ -120,8 +120,8 @@ public class OrderService extends GenerateService<Order, String> {
                     orderItem.setProductName(variant.getProduct().getName());
 
                     if (variant.getPromotionalPrice() != null
-                            && variant.getPromotionStartTime().isBefore(LocalDateTime.now())
-                            && variant.getPromotionEndTime().isAfter(LocalDateTime.now())) {
+                            && (variant.getPromotionStartTime() != null && variant.getPromotionStartTime().isBefore(LocalDateTime.now()))
+                            && (variant.getPromotionEndTime() != null && variant.getPromotionEndTime().isAfter(LocalDateTime.now()))) {
                         orderItem.setPrice(variant.getPromotionalPrice());
                     } else {
                         orderItem.setPrice(variant.getSalePrice());
@@ -184,33 +184,46 @@ public class OrderService extends GenerateService<Order, String> {
         }
 
         orderMapper.updateOrder(order, request);
+        if (request.getIsPaid() == true && order.getIsPaid() != null) {
+            order.setIsPaid(true);
+            order.setPaidAt(LocalDateTime.now());
+        } else if (!request.getIsPaid()) {
+            order.setIsPaid(false);
+            order.setPaidAt(null);
+        }
+
+        // khi thay đổi cuttomer
         // th1: nếu trước đó là customer guest và không có order nào khác ngoài order hiện tại
         // thì xóa customer guest đó, gắm order hiện tại vào cho customer mới (không phải guest)
         // th2: nếu trước đó không là customer guest và khi cập nhật trở thành guest
         // thì tạo customer guest mới là chủ của order đó
-        if (request.getCustomerId() != null && !request.getCustomerId().isBlank()) {
-            long otherOrders = order.getCustomer().getOrders().stream()
-                    .filter(o -> !o.getId().equals(order.getId()))
-                    .count();
-            if (order.getCustomer().getAuthProvider().equals(AuthProvider.GUEST)
-                    && otherOrders == 0
-            ) {
-                customerRepository.delete(order.getCustomer());
-            }
-            Customer customer = customerRepository.findById(request.getCustomerId())
-                    .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
-            order.setCustomer(customer);
-        } else if (request.getCustomerId().isEmpty()) {
-            if (!order.getCustomer().getAuthProvider().equals(AuthProvider.GUEST)) {
-                CustomerCreateRequest newCustomer = CustomerCreateRequest.builder()
-                        .fullName(request.getCustomerName())
-                        .phone(request.getPhone())
-                        .isGuest(true)
-                        .authProvider("GUEST")
-                        .build();
-                Customer customer = customerMapper.toCustomer(newCustomer);
-                customerRepository.save(customer);
-                order.setCustomer(customer);
+        Customer deleteCustomer = null;
+        if (!request.getCustomerId().equals(order.getCustomer().getId()) && request.getCustomerId() != null) {
+            if (!request.getCustomerId().isBlank()) {
+                long otherOrders = order.getCustomer().getOrders().stream()
+                        .filter(o -> !o.getId().equals(order.getId()))
+                        .count();
+                Customer newCustomer = customerRepository.findById(request.getCustomerId())
+                        .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+                Customer oldCustomer = order.getCustomer();
+                order.setCustomer(newCustomer);
+                if (oldCustomer.getAuthProvider().equals(AuthProvider.GUEST)
+                        && otherOrders == 0
+                ) {
+                    deleteCustomer = oldCustomer;
+                }
+            } else if (request.getCustomerId().isEmpty()) {
+                if (!order.getCustomer().getAuthProvider().equals(AuthProvider.GUEST)) {
+                    CustomerCreateRequest newCustomer = CustomerCreateRequest.builder()
+                            .fullName(request.getCustomerName())
+                            .phone(request.getPhone())
+                            .isGuest(true)
+                            .authProvider("GUEST")
+                            .build();
+                    Customer customer = customerMapper.toCustomer(newCustomer);
+                    customerRepository.save(customer);
+                    order.setCustomer(customer);
+                }
             }
         }
 
@@ -219,9 +232,9 @@ public class OrderService extends GenerateService<Order, String> {
                 && (order.getVoucher() == null || !order.getVoucher().getId().equals(request.getVoucherId()))) {
             Voucher voucher = voucherRepository.findById(request.getVoucherId())
                     .orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
-            if (voucher.getStartDate().isAfter(LocalDateTime.now()))
+            if (voucher.getStartDate() != null && voucher.getStartDate().isAfter(LocalDateTime.now()))
                 throw new AppException(ErrorCode.VOUCHER_NOT_STARTED);
-            if (voucher.getEndDate().isBefore(LocalDateTime.now()))
+            if (voucher.getEndDate() != null && voucher.getEndDate().isBefore(LocalDateTime.now()))
                 throw new AppException(ErrorCode.VOUCHER_EXPIRED);
             if ((long) voucher.getOrders().size() >= voucher.getQuantity())
                 throw new AppException(ErrorCode.VOUCHER_USAGE_LIMIT_EXCEEDED);
@@ -248,12 +261,13 @@ public class OrderService extends GenerateService<Order, String> {
                         orderItem.setProductName(variant.getProduct().getName());
 
                         if (variant.getPromotionalPrice() != null
-                                && variant.getPromotionStartTime().isBefore(LocalDateTime.now())
-                                && variant.getPromotionEndTime().isAfter(LocalDateTime.now())) {
+                                && (variant.getPromotionStartTime() != null && variant.getPromotionStartTime().isBefore(LocalDateTime.now()))
+                                && (variant.getPromotionEndTime() != null && variant.getPromotionEndTime().isAfter(LocalDateTime.now()))) {
                             orderItem.setPrice(variant.getPromotionalPrice());
                         } else {
                             orderItem.setPrice(variant.getSalePrice());
                         }
+
                         orderItem.setOrder(order);
                         totalAmount[0] = totalAmount[0].add(
                                 orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()))
@@ -284,6 +298,8 @@ public class OrderService extends GenerateService<Order, String> {
         }
 
         orderRepository.save(order);
+        if (deleteCustomer != null)
+            customerRepository.delete(deleteCustomer);
         return orderMapper.toOrderResponse(order);
     }
 

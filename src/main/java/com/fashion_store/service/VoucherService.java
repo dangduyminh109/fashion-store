@@ -4,7 +4,6 @@ import com.fashion_store.dto.request.VoucherRequest;
 import com.fashion_store.dto.request.VoucherUpdateRequest;
 import com.fashion_store.dto.response.VoucherResponse;
 import com.fashion_store.entity.Voucher;
-import com.fashion_store.enums.DiscountType;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;
 import com.fashion_store.mapper.VoucherMapper;
@@ -43,9 +42,23 @@ public class VoucherService extends GenerateService<Voucher, Long> {
         return voucherMapper.toVoucherResponse(voucher);
     }
 
-    public List<VoucherResponse> getAll() {
+    public List<VoucherResponse> getAll(boolean deleted, String name) {
         return voucherRepository.findAll()
                 .stream()
+                .filter(item -> {
+                    if (name != null) {
+                        return item.getName().trim().toLowerCase().contains(name.trim().toLowerCase()) && item.getIsDeleted() == deleted;
+                    }
+                    return item.getIsDeleted() == deleted;
+                })
+                .map(voucherMapper::toVoucherResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<VoucherResponse> getVoucher() {
+        return voucherRepository.findAll()
+                .stream()
+                .filter(item -> item.getIsDeleted() == false && item.getStatus() == true)
                 .map(voucherMapper::toVoucherResponse)
                 .collect(Collectors.toList());
     }

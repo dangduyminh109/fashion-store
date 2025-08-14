@@ -62,9 +62,10 @@ public class BrandService extends GenerateService<Brand, Long> {
         return brandMapper.toBrandResponse(brand);
     }
 
-    public List<BrandResponse> getAll() {
+    public List<BrandResponse> getAll(boolean deleted) {
         return brandRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(brandMapper::toBrandResponse)
                 .collect(Collectors.toList());
     }

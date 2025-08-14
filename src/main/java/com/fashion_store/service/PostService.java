@@ -71,9 +71,10 @@ public class PostService extends GenerateService<Post, Long> {
         return postMapper.toPostResponse(post);
     }
 
-    public List<PostResponse> getAll() {
+    public List<PostResponse> getAll(boolean deleted) {
         return postRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(postMapper::toPostResponse)
                 .collect(Collectors.toList());
     }

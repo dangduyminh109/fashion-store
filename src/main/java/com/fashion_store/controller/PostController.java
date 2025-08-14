@@ -24,9 +24,11 @@ public class PostController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('POST_VIEW')")
-    public ApiResponse<List<PostResponse>> getAll() {
+    public ApiResponse<List<PostResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<PostResponse>>builder()
-                .result(postService.getAll())
+                .result(postService.getAll(deleted))
                 .build();
     }
 

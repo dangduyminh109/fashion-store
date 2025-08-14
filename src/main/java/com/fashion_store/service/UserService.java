@@ -40,7 +40,7 @@ public class UserService extends GenerateService<User, String> {
     public UserResponse create(UserCreateRequest request) {
         if (userRepository.existsByUsername(request.getUsername()))
             throw new AppException(ErrorCode.EXISTED);
-        if (userRepository.existsByEmail(request.getEmail()))
+        if (request.getEmail() != null && userRepository.existsByEmail(request.getEmail()))
             throw new AppException(ErrorCode.EXISTED);
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -63,9 +63,10 @@ public class UserService extends GenerateService<User, String> {
         return userMapper.toUserResponse(user);
     }
 
-    public List<UserResponse> getAll() {
+    public List<UserResponse> getAll(boolean deleted) {
         return userRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(userMapper::toUserResponse)
                 .collect(Collectors.toList());
     }

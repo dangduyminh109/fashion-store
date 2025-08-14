@@ -52,10 +52,10 @@ public class DataSeeder implements ApplicationRunner {
                     .username("admin")
                     .status(true)
                     .role(adminRole)
-                    .password(passwordEncoder.encode("12345"))
+                    .password(passwordEncoder.encode("123456789"))
                     .build();
             userRepository.save(admin);
-            log.warn("User admin created with default password: 12345. Please change it.");
+            log.warn("User admin created with default password: 123456789. Please change it.");
         }
     }
 
@@ -70,11 +70,6 @@ public class DataSeeder implements ApplicationRunner {
                 Permission.builder().code("CATEGORY_CREATE").name("Thêm mới").module("Danh mục").build(),
                 Permission.builder().code("CATEGORY_UPDATE").name("Cập nhật").module("Danh mục").build(),
                 Permission.builder().code("CATEGORY_DELETE").name("Xóa").module("Danh mục").build(),
-
-                Permission.builder().code("BRAND_VIEW").name("Xem").module("Thương hiệu").build(),
-                Permission.builder().code("BRAND_CREATE").name("Thêm mới").module("Thương hiệu").build(),
-                Permission.builder().code("BRAND_UPDATE").name("Cập nhật").module("Thương hiệu").build(),
-                Permission.builder().code("BRAND_DELETE").name("Xóa").module("Thương hiệu").build(),
 
                 Permission.builder().code("CUSTOMER_VIEW").name("Xem").module("Khách hàng").build(),
                 Permission.builder().code("CUSTOMER_CREATE").name("Thêm mới").module("Khách hàng").build(),
@@ -106,11 +101,6 @@ public class DataSeeder implements ApplicationRunner {
                 Permission.builder().code("TOPIC_UPDATE").name("Cập nhật").module("Chủ đề").build(),
                 Permission.builder().code("TOPIC_DELETE").name("Xóa").module("Chủ đề").build(),
 
-                Permission.builder().code("PERMISSION_VIEW").name("Xem").module("Địa chỉ").build(),
-                Permission.builder().code("PERMISSION_CREATE").name("Thêm mới").module("Địa chỉ").build(),
-                Permission.builder().code("PERMISSION_UPDATE").name("Cập nhật").module("Địa chỉ").build(),
-                Permission.builder().code("PERMISSION_DELETE").name("Xóa").module("Địa chỉ").build(),
-
                 Permission.builder().code("IMPORT_RECEPT_VIEW").name("Xem").module("Nhập hàng").build(),
                 Permission.builder().code("IMPORT_RECEPT_CREATE").name("Thêm mới").module("Nhập hàng").build(),
                 Permission.builder().code("IMPORT_RECEPT_UPDATE").name("Cập nhật").module("Nhập hàng").build(),
@@ -120,6 +110,7 @@ public class DataSeeder implements ApplicationRunner {
                 Permission.builder().code("ROLE_CREATE").name("Thêm mới").module("Vai trò").build(),
                 Permission.builder().code("ROLE_UPDATE").name("Cập nhật").module("Vai trò").build(),
                 Permission.builder().code("ROLE_DELETE").name("Xóa").module("Vai trò").build(),
+                Permission.builder().code("PERMISSION_UPDATE").name("Phân quyền").module("Vai trò").build(),
 
                 Permission.builder().code("ATTRIBUTE_VIEW").name("Xem").module("Thuộc tính").build(),
                 Permission.builder().code("ATTRIBUTE_CREATE").name("Thêm mới").module("Thuộc tính").build(),

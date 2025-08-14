@@ -1,17 +1,24 @@
 package com.fashion_store.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +37,14 @@ public class SecurityConfig {
             "/oauth2/**",
             "/auth/**",
             "/order/client/create",
-            "/payment/**"
+            "/payment/**",
+            "/category/getTree",
+            "/product/getAll",
+            "/product/info/slug/{slug}",
+            "/product/variant/{id}",
+            "/product/category/{slug}",
+            "/voucher/getAll",
+            "/address/**"
     };
 
     @Value("${jwt.signerKey}")
@@ -53,6 +67,13 @@ public class SecurityConfig {
                                 .requestMatchers(PUBLIC_ROUTER).permitAll()
                                 .anyRequest().authenticated()
                 )
+                .oauth2ResourceServer((oauth2) -> oauth2
+                        .jwt(jwtConfigurer ->
+                                jwtConfigurer.decoder(customJwtDecoder)
+                                        .jwtAuthenticationConverter(customJwtAuthenticationConverter)
+                        )
+                        .authenticationEntryPoint(new jwtAuthenticationEntryPoint())
+                )
                 .with(new OAuth2LoginConfigurer<HttpSecurity>(), oauth2 -> oauth2
                         .successHandler(oAuth2SuccessHandler)
                         .userInfoEndpoint(userInfo -> userInfo
@@ -66,16 +87,28 @@ public class SecurityConfig {
                             }
                         })
                 )
-                .oauth2ResourceServer((oauth2) -> oauth2
-                        .jwt(jwtConfigurer ->
-                                jwtConfigurer.decoder(customJwtDecoder)
-                                        .jwtAuthenticationConverter(customJwtAuthenticationConverter)
-                        )
-                        .authenticationEntryPoint(new jwtAuthenticationEntryPoint())
-                );
-
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+                .cors(withDefaults -> {
+                })
+                .csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
     @Bean

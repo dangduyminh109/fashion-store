@@ -34,7 +34,6 @@ public class Customer extends BaseModel {
     @Column(unique = true)
     String email;
 
-    @Column(unique = true)
     String phone;
 
     @Column(nullable = false)

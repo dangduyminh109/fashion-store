@@ -24,9 +24,11 @@ public class BrandController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('BRAND_VIEW')")
-    public ApiResponse<List<BrandResponse>> getAll() {
+    public ApiResponse<List<BrandResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<BrandResponse>>builder()
-                .result(brandService.getAll())
+                .result(brandService.getAll(deleted))
                 .build();
     }
 

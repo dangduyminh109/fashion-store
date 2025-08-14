@@ -25,7 +25,7 @@ public class Order extends BaseModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     @Builder.Default
-    boolean isPaid = false;
+    Boolean isPaid = false;
     LocalDateTime paidAt;
     @Column(nullable = false)
     BigDecimal totalAmount;

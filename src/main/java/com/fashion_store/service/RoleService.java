@@ -2,11 +2,13 @@ package com.fashion_store.service;
 
 import com.fashion_store.dto.request.RoleRequest;
 import com.fashion_store.dto.request.UpdateRolePermissionsRequest;
+import com.fashion_store.dto.response.PermissionResponse;
 import com.fashion_store.dto.response.RoleResponse;
 import com.fashion_store.entity.Permission;
 import com.fashion_store.entity.Role;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;
+import com.fashion_store.mapper.PermissionMapper;
 import com.fashion_store.mapper.RoleMapper;
 import com.fashion_store.repository.PermissionRepository;
 import com.fashion_store.repository.RoleRepository;
@@ -26,7 +28,8 @@ import java.util.stream.Collectors;
 public class RoleService {
     RoleRepository roleRepository;
     RoleMapper roleMapper;
-    private final PermissionRepository permissionRepository;
+    PermissionRepository permissionRepository;
+    PermissionMapper permissionMapper;
 
     public RoleResponse create(RoleRequest request) {
         if (roleRepository.existsByName(request.getName()))
@@ -37,10 +40,18 @@ public class RoleService {
         return roleMapper.toRoleResponse(role);
     }
 
-    public List<RoleResponse> getAll() {
+    public List<RoleResponse> getAll(boolean deleted) {
         return roleRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(roleMapper::toRoleResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PermissionResponse> getPermission() {
+        return permissionRepository.findAll()
+                .stream()
+                .map(permissionMapper::toPermissionResponse)
                 .collect(Collectors.toList());
     }
 

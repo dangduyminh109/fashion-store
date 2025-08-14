@@ -1,5 +1,6 @@
 package com.fashion_store.service;
 
+import com.fashion_store.Utils.SecurityUtils;
 import com.fashion_store.dto.request.CustomerCreateRequest;
 import com.fashion_store.dto.request.CustomerUpdateRequest;
 import com.fashion_store.dto.response.CustomerResponse;
@@ -34,9 +35,9 @@ public class CustomerService extends GenerateService<Customer, String> {
     }
 
     public CustomerResponse create(CustomerCreateRequest request) {
-        if (customerRepository.existsByEmail(request.getEmail()))
+        if (request.getEmail() != null && customerRepository.existsByEmail(request.getEmail()))
             throw new AppException(ErrorCode.EXISTED);
-        if (customerRepository.existsByPhone(request.getPhone()))
+        if (request.getPhone() != null && customerRepository.existsByPhone(request.getPhone()))
             throw new AppException(ErrorCode.EXISTED);
         request.setAuthProvider(request.getAuthProvider().toUpperCase().trim());
         Customer customer = customerMapper.toCustomer(request);
@@ -58,11 +59,25 @@ public class CustomerService extends GenerateService<Customer, String> {
         return customerMapper.toCustomerResponse(customer);
     }
 
-    public List<CustomerResponse> getAll() {
+    public List<CustomerResponse> getAll(boolean deleted, String name) {
         return customerRepository.findAll()
                 .stream()
+                .filter(item -> {
+                    if (name != null) {
+                        return item.getFullName().trim().toLowerCase().contains(name.trim().toLowerCase()) && item.getIsDeleted() == deleted;
+                    }
+                    return item.getIsDeleted() == deleted;
+                })
                 .map(customerMapper::toCustomerResponse)
                 .collect(Collectors.toList());
+    }
+
+    public CustomerResponse getMyInfo() {
+        String customerId = SecurityUtils.getCurrentUserId();
+        if (customerId == null)
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new AppException(ErrorCode.NOT_EXIST));
+        return customerMapper.toCustomerResponse(customer);
     }
 
     public CustomerResponse getInfo(String id) {
@@ -92,13 +107,8 @@ public class CustomerService extends GenerateService<Customer, String> {
         }
         customerMapper.updateCustomer(customer, request);
 
-        if (request.getOldPassword() != null && request.getNewPassword() != null) {
-            boolean authenticated = passwordEncoder.matches(request.getOldPassword().trim(), customer.getPassword());
-            if (authenticated) {
-                customer.setPassword(passwordEncoder.encode(request.getNewPassword().trim()));
-            } else {
-                throw new AppException(ErrorCode.INVALID_PASSWORD);
-            }
+        if (request.getNewPassword() != null) {
+            customer.setPassword(passwordEncoder.encode(request.getNewPassword().trim()));
         }
         // handle avatar
         boolean avatarDelete = request.getAvatarDelete() != null && request.getAvatarDelete();

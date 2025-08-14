@@ -3,6 +3,7 @@ package com.fashion_store.service;
 import com.fashion_store.Utils.GenerateSlugUtils;
 import com.fashion_store.dto.request.CategoryRequest;
 import com.fashion_store.dto.response.CategoryResponse;
+import com.fashion_store.dto.response.CategoryTreeResponse;
 import com.fashion_store.entity.Category;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;
@@ -16,9 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -71,9 +70,70 @@ public class CategoryService extends GenerateService<Category, Long> {
         return categoryMapper.toCategoryResponse(category);
     }
 
-    public List<CategoryResponse> getAll() {
+    public List<CategoryTreeResponse> getTree(Long excludeId) {
+        List<Category> all = categoryRepository.findAll();
+        Map<Long, CategoryTreeResponse> map = new HashMap<>();
+        for (Category c : all) {
+            map.put(c.getId(),
+                    CategoryTreeResponse.builder()
+                            .id(c.getId())
+                            .name(c.getName())
+                            .slug(c.getSlug())
+                            .children(new ArrayList<>())
+                            .build()
+            );
+        }
+
+        Map<Long, List<Long>> childrenMap = new HashMap<>();
+        for (Category c : all) {
+            Long pid = c.getParent() == null ? null : c.getParent().getId();
+            childrenMap.computeIfAbsent(pid, k -> new ArrayList<>()).add(c.getId());
+        }
+
+        Set<Long> excluded = new HashSet<>();
+        if (excludeId != null) {
+            Deque<Long> stack = new ArrayDeque<>();
+            stack.push(excludeId);
+            while (!stack.isEmpty()) {
+                Long cur = stack.pop();
+                if (!excluded.add(cur)) continue;
+                List<Long> childs = childrenMap.get(cur);
+                if (childs != null) {
+                    for (Long cid : childs) {
+                        if (!excluded.contains(cid)) {
+                            stack.push(cid);
+                        }
+                    }
+                }
+            }
+        }
+
+        List<CategoryTreeResponse> roots = new ArrayList<>();
+        for (Category c : all) {
+            Long cid = c.getId();
+            if (excluded.contains(cid)) continue;
+
+            Long pid = c.getParent() == null ? null : c.getParent().getId();
+            if (pid != null && !excluded.contains(pid)) {
+                CategoryTreeResponse parent = map.get(pid);
+                if (parent != null) parent.getChildren().add(map.get(cid));
+                else roots.add(map.get(cid));
+            } else {
+                if (pid == null) {
+                    roots.add(map.get(cid));
+                } else {
+                    roots.add(map.get(cid));
+                }
+            }
+        }
+
+        return roots;
+    }
+
+    public List<CategoryResponse> getAll(boolean deleted) {
         return categoryRepository.findAll()
                 .stream()
+                .filter(item -> item.getIsDeleted() == deleted)
                 .map(categoryMapper::toCategoryResponse)
                 .collect(Collectors.toList());
     }

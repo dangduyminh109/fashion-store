@@ -22,9 +22,11 @@ public class AttributeController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ATTRIBUTE_VIEW')")
-    public ApiResponse<List<AttributeResponse>> getAll() {
+    public ApiResponse<List<AttributeResponse>> getAll(
+            @RequestParam(value = "deleted", required = false) boolean deleted
+    ) {
         return ApiResponse.<List<AttributeResponse>>builder()
-                .result(attributeService.getAll())
+                .result(attributeService.getAll(deleted))
                 .build();
     }
 

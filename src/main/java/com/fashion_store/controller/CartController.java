@@ -34,6 +34,13 @@ public class CartController {
                 .build();
     }
 
+    @PutMapping("/update")
+    public ApiResponse<CartItemResponse> update(@RequestBody CartItemRequest cartItemRequest) {
+        return ApiResponse.<CartItemResponse>builder()
+                .result(cartService.update(cartItemRequest))
+                .build();
+    }
+
     @DeleteMapping("/delete/{variantId}")
     public ApiResponse<Void> delete(@PathVariable Long variantId) {
         cartService.delete(variantId);

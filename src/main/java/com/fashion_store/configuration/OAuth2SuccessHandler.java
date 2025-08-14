@@ -29,6 +29,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         } catch (JOSEException e) {
             throw new RuntimeException(e);
         }
-        response.sendRedirect("http://localhost:5500/text14/login-success.html?token=" + jwt);
+        response.sendRedirect("http://localhost:5173?token=" + jwt);
     }
 }
