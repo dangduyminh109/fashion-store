@@ -1,8 +1,8 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.VariantCreateRequest;
-import com.fashion_store.dto.request.VariantUpdateRequest;
-import com.fashion_store.dto.response.VariantClientResponse;
+import com.fashion_store.dto.variant.request.VariantCreateRequest;
+import com.fashion_store.dto.variant.request.VariantUpdateRequest;
+import com.fashion_store.dto.variant.response.VariantClientResponse;
 import com.fashion_store.entity.Variant;
 import org.mapstruct.*;
 

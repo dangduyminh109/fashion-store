@@ -1,7 +1,7 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.CategoryRequest;
-import com.fashion_store.dto.response.CategoryResponse;
+import com.fashion_store.dto.category.request.CategoryRequest;
+import com.fashion_store.dto.category.response.CategoryResponse;
 import com.fashion_store.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

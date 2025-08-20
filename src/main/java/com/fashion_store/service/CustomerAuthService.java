@@ -1,10 +1,14 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.JwtUtils;
+import com.fashion_store.dto.auth.request.CustomerAuthRequest;
+import com.fashion_store.dto.auth.request.LogoutRequest;
+import com.fashion_store.dto.auth.request.RefreshRequest;
+import com.fashion_store.dto.customer.request.CustomerRegisterRequest;
+import com.fashion_store.dto.customer.request.SendOtpRequest;
 import com.fashion_store.enums.TypeUser;
-import com.fashion_store.dto.request.*;
-import com.fashion_store.dto.response.AuthenticationResponse;
-import com.fashion_store.dto.response.CustomerResponse;
+import com.fashion_store.dto.auth.response.AuthenticationResponse;
+import com.fashion_store.dto.customer.response.CustomerResponse;
 import com.fashion_store.entity.InvalidatedToken;
 import com.fashion_store.entity.Customer;
 import com.fashion_store.entity.Otp;

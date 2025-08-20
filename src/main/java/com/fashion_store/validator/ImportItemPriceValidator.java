@@ -1,6 +1,6 @@
 package com.fashion_store.validator;
 
-import com.fashion_store.dto.request.ImportItemRequest;
+import com.fashion_store.dto.importReceipt.request.ImportItemRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

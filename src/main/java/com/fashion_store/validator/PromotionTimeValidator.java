@@ -1,7 +1,7 @@
 package com.fashion_store.validator;
 
-import com.fashion_store.dto.request.VariantCreateRequest;
-import com.fashion_store.dto.request.VariantUpdateRequest;
+import com.fashion_store.dto.variant.request.VariantCreateRequest;
+import com.fashion_store.dto.variant.request.VariantUpdateRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

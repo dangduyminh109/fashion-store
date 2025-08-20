@@ -1,7 +1,7 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.SupplierRequest;
-import com.fashion_store.dto.response.SupplierResponse;
+import com.fashion_store.dto.supplier.request.SupplierRequest;
+import com.fashion_store.dto.supplier.response.SupplierResponse;
 import com.fashion_store.entity.Supplier;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

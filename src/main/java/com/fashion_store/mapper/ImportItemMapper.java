@@ -1,7 +1,7 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.ImportItemRequest;
-import com.fashion_store.dto.response.ImportItemResponse;
+import com.fashion_store.dto.importReceipt.request.ImportItemRequest;
+import com.fashion_store.dto.importReceipt.response.ImportItemResponse;
 import com.fashion_store.entity.ImportItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

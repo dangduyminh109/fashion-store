@@ -1,7 +1,7 @@
 package com.fashion_store.validator;
 
-import com.fashion_store.dto.request.VoucherRequest;
-import com.fashion_store.dto.request.VoucherUpdateRequest;
+import com.fashion_store.dto.voucher.request.VoucherRequest;
+import com.fashion_store.dto.voucher.request.VoucherUpdateRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

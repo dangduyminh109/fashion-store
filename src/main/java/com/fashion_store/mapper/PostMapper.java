@@ -1,7 +1,7 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.PostRequest;
-import com.fashion_store.dto.response.PostResponse;
+import com.fashion_store.dto.post.request.PostRequest;
+import com.fashion_store.dto.post.response.PostResponse;
 import com.fashion_store.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

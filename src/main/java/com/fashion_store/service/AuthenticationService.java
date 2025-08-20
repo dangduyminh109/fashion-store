@@ -2,11 +2,11 @@ package com.fashion_store.service;
 
 import com.fashion_store.Utils.JwtUtils;
 import com.fashion_store.enums.TypeUser;
-import com.fashion_store.dto.request.AuthenticationRequest;
-import com.fashion_store.dto.request.LogoutRequest;
-import com.fashion_store.dto.request.RefreshRequest;
-import com.fashion_store.dto.response.AuthenticationResponse;
-import com.fashion_store.dto.response.UserResponse;
+import com.fashion_store.dto.auth.request.AuthenticationRequest;
+import com.fashion_store.dto.auth.request.LogoutRequest;
+import com.fashion_store.dto.auth.request.RefreshRequest;
+import com.fashion_store.dto.auth.response.AuthenticationResponse;
+import com.fashion_store.dto.user.response.UserResponse;
 import com.fashion_store.entity.InvalidatedToken;
 import com.fashion_store.entity.User;
 import com.fashion_store.exception.AppException;

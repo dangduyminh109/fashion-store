@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
-import com.fashion_store.dto.request.AttributeValueRequest;
-import com.fashion_store.dto.request.AttributeValueUpdateRequest;
-import com.fashion_store.dto.response.AttributeValueResponse;
+import com.fashion_store.dto.attribute.request.AttributeValueRequest;
+import com.fashion_store.dto.attribute.request.AttributeValueUpdateRequest;
+import com.fashion_store.dto.attribute.response.AttributeValueResponse;
 import com.fashion_store.entity.Attribute;
 import com.fashion_store.entity.AttributeValue;
 import com.fashion_store.exception.AppException;

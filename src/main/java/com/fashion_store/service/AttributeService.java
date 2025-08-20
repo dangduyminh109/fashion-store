@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
-import com.fashion_store.dto.request.AttributeRequest;
-import com.fashion_store.dto.request.AttributeValueItemRequest;
-import com.fashion_store.dto.response.AttributeResponse;
+import com.fashion_store.dto.attribute.request.AttributeRequest;
+import com.fashion_store.dto.attribute.request.AttributeValueItemRequest;
+import com.fashion_store.dto.attribute.response.AttributeResponse;
 import com.fashion_store.entity.Attribute;
 import com.fashion_store.entity.AttributeValue;
 import com.fashion_store.enums.AttributeDisplayType;

@@ -1,9 +1,9 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.AttributeValueRequest;
-import com.fashion_store.dto.request.AttributeValueUpdateRequest;
-import com.fashion_store.dto.request.AttributeValueItemRequest;
-import com.fashion_store.dto.response.AttributeValueResponse;
+import com.fashion_store.dto.attribute.request.AttributeValueRequest;
+import com.fashion_store.dto.attribute.request.AttributeValueUpdateRequest;
+import com.fashion_store.dto.attribute.request.AttributeValueItemRequest;
+import com.fashion_store.dto.attribute.response.AttributeValueResponse;
 import com.fashion_store.entity.AttributeValue;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

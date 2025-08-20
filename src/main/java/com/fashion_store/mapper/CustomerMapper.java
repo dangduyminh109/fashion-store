@@ -1,9 +1,9 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.CustomerCreateRequest;
-import com.fashion_store.dto.request.CustomerRegisterRequest;
-import com.fashion_store.dto.request.CustomerUpdateRequest;
-import com.fashion_store.dto.response.CustomerResponse;
+import com.fashion_store.dto.customer.request.CustomerCreateRequest;
+import com.fashion_store.dto.customer.request.CustomerRegisterRequest;
+import com.fashion_store.dto.customer.request.CustomerUpdateRequest;
+import com.fashion_store.dto.customer.response.CustomerResponse;
 import com.fashion_store.entity.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

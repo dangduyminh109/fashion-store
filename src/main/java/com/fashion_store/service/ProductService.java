@@ -1,11 +1,15 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.GenerateSlugUtils;
-import com.fashion_store.dto.request.ProductUpdateRequest;
-import com.fashion_store.dto.request.VariantCreateRequest;
-import com.fashion_store.dto.request.ProductCreateRequest;
-import com.fashion_store.dto.request.VariantUpdateRequest;
-import com.fashion_store.dto.response.*;
+import com.fashion_store.dto.attribute.response.AttributeValueResponse;
+import com.fashion_store.dto.category.response.CategoryResponse;
+import com.fashion_store.dto.product.request.ProductUpdateRequest;
+import com.fashion_store.dto.product.response.ProductFromCategoryResponse;
+import com.fashion_store.dto.product.response.ProductResponse;
+import com.fashion_store.dto.variant.request.VariantCreateRequest;
+import com.fashion_store.dto.product.request.ProductCreateRequest;
+import com.fashion_store.dto.variant.request.VariantUpdateRequest;
+import com.fashion_store.dto.variant.response.VariantResponse;
 import com.fashion_store.entity.*;
 import com.fashion_store.entity.Product;
 import com.fashion_store.exception.AppException;
@@ -205,7 +209,7 @@ public class ProductService extends GenerateService<Product, Long> {
     }
 
     public List<ProductResponse> getAll(boolean deleted, String name) {
-        return productRepository.findAll() // đây là findAll() đã được @EntityGraph
+        return productRepository.findAll()
                 .stream()
                 .filter(item -> {
                     if (name != null && !name.trim().isEmpty()) {
@@ -279,7 +283,7 @@ public class ProductService extends GenerateService<Product, Long> {
         List<ProductResponse> resultProduct = all.stream()
                 .filter(c -> c.getProducts() != null)
                 .flatMap(c -> c.getProducts().stream())
-                .distinct() // cần equals/hashCode trên Product nếu muốn loại trùng
+                .distinct()
                 .map(productMapper::toProductResponse)
                 .toList();
 

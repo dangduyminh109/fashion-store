@@ -1,9 +1,9 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.SecurityUtils;
-import com.fashion_store.dto.request.CustomerCreateRequest;
-import com.fashion_store.dto.request.CustomerUpdateRequest;
-import com.fashion_store.dto.response.CustomerResponse;
+import com.fashion_store.dto.customer.request.CustomerCreateRequest;
+import com.fashion_store.dto.customer.request.CustomerUpdateRequest;
+import com.fashion_store.dto.customer.response.CustomerResponse;
 import com.fashion_store.entity.Customer;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;

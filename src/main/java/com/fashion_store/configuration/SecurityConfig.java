@@ -24,27 +24,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final String[] PUBLIC_ROUTER = {
-            "/admin/auth/login",
-            "/admin/auth/logout",
-            "/admin/auth/refresh",
-            "/auth/login",
-            "/auth/logout",
-            "/auth/refresh",
-            "/auth/register",
-            "/auth/send-otp",
-            "/auth/oauth2/success",
-            "/oauth2/**",
-            "/auth/**",
-            "/order/client/create",
-            "/payment/**",
-            "/category/getTree",
-            "/product/getAll",
-            "/product/info/slug/{slug}",
-            "/product/variant/{id}",
-            "/product/category/{slug}",
-            "/voucher/getAll",
-            "/address/**"
+    private final String[] PRIVATE_ROUTER = {
+            "/api/admin/**",
+            "/api/cart/**",
+            "/api/customer/**"
     };
 
     @Value("${jwt.signerKey}")
@@ -64,15 +47,15 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(
                         (authorize) -> authorize
-                                .requestMatchers(PUBLIC_ROUTER).permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers(PRIVATE_ROUTER).authenticated()
+                                .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt(jwtConfigurer ->
                                 jwtConfigurer.decoder(customJwtDecoder)
                                         .jwtAuthenticationConverter(customJwtAuthenticationConverter)
                         )
-                        .authenticationEntryPoint(new jwtAuthenticationEntryPoint())
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 )
                 .with(new OAuth2LoginConfigurer<HttpSecurity>(), oauth2 -> oauth2
                         .successHandler(oAuth2SuccessHandler)
