@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.GenerateSlugUtils;
-import com.fashion_store.dto.request.TopicRequest;
-import com.fashion_store.dto.response.TopicResponse;
+import com.fashion_store.dto.topic.request.TopicRequest;
+import com.fashion_store.dto.topic.response.TopicResponse;
 import com.fashion_store.entity.Topic;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;
@@ -11,14 +11,12 @@ import com.fashion_store.repository.TopicRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

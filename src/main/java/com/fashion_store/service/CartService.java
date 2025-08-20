@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.SecurityUtils;
-import com.fashion_store.dto.request.CartItemRequest;
-import com.fashion_store.dto.response.CartItemResponse;
+import com.fashion_store.dto.cart.request.CartItemRequest;
+import com.fashion_store.dto.cart.response.CartItemResponse;
 import com.fashion_store.entity.Cart;
 import com.fashion_store.entity.CartItem;
 import com.fashion_store.entity.Customer;

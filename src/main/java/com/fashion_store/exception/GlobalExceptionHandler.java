@@ -1,6 +1,6 @@
 package com.fashion_store.exception;
 
-import com.fashion_store.dto.response.ApiResponse;
+import com.fashion_store.dto.common.response.ApiResponse;
 import com.nimbusds.jose.JOSEException;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;

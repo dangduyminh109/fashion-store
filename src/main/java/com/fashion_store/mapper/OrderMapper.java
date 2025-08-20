@@ -1,8 +1,8 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.OrderCreateRequest;
-import com.fashion_store.dto.request.OrderUpdateRequest;
-import com.fashion_store.dto.response.OrderResponse;
+import com.fashion_store.dto.order.request.OrderCreateRequest;
+import com.fashion_store.dto.order.request.OrderUpdateRequest;
+import com.fashion_store.dto.order.response.OrderResponse;
 import com.fashion_store.entity.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

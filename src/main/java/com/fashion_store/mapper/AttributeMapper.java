@@ -1,7 +1,7 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.AttributeRequest;
-import com.fashion_store.dto.response.AttributeResponse;
+import com.fashion_store.dto.attribute.request.AttributeRequest;
+import com.fashion_store.dto.attribute.response.AttributeResponse;
 import com.fashion_store.entity.Attribute;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

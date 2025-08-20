@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
-import com.fashion_store.dto.request.AddressRequest;
-import com.fashion_store.dto.request.AddressUpdateRequest;
-import com.fashion_store.dto.response.AddressResponse;
+import com.fashion_store.dto.address.request.AddressRequest;
+import com.fashion_store.dto.address.request.AddressUpdateRequest;
+import com.fashion_store.dto.address.response.AddressResponse;
 import com.fashion_store.entity.Address;
 import com.fashion_store.entity.Customer;
 import com.fashion_store.exception.AppException;

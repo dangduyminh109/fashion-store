@@ -1,7 +1,7 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.RoleRequest;
-import com.fashion_store.dto.response.RoleResponse;
+import com.fashion_store.dto.role.request.RoleRequest;
+import com.fashion_store.dto.role.resonse.RoleResponse;
 import com.fashion_store.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.GenerateSlugUtils;
-import com.fashion_store.dto.request.BrandRequest;
-import com.fashion_store.dto.response.BrandResponse;
+import com.fashion_store.dto.brand.request.BrandRequest;
+import com.fashion_store.dto.brand.response.BrandResponse;
 import com.fashion_store.entity.Brand;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;

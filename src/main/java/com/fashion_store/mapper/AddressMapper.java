@@ -1,8 +1,8 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.AddressRequest;
-import com.fashion_store.dto.request.AddressUpdateRequest;
-import com.fashion_store.dto.response.AddressResponse;
+import com.fashion_store.dto.address.request.AddressRequest;
+import com.fashion_store.dto.address.request.AddressUpdateRequest;
+import com.fashion_store.dto.address.response.AddressResponse;
 import com.fashion_store.entity.Address;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

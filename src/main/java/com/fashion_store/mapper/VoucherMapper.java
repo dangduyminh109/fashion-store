@@ -1,8 +1,8 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.request.VoucherRequest;
-import com.fashion_store.dto.request.VoucherUpdateRequest;
-import com.fashion_store.dto.response.VoucherResponse;
+import com.fashion_store.dto.voucher.request.VoucherRequest;
+import com.fashion_store.dto.voucher.request.VoucherUpdateRequest;
+import com.fashion_store.dto.voucher.response.VoucherResponse;
 import com.fashion_store.entity.Voucher;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

@@ -1,9 +1,9 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.GenerateSlugUtils;
-import com.fashion_store.dto.request.CategoryRequest;
-import com.fashion_store.dto.response.CategoryResponse;
-import com.fashion_store.dto.response.CategoryTreeResponse;
+import com.fashion_store.dto.category.request.CategoryRequest;
+import com.fashion_store.dto.category.response.CategoryResponse;
+import com.fashion_store.dto.category.response.CategoryTreeResponse;
 import com.fashion_store.entity.Category;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;

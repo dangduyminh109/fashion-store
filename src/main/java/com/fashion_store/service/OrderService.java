@@ -1,10 +1,10 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.SecurityUtils;
-import com.fashion_store.dto.request.CustomerCreateRequest;
-import com.fashion_store.dto.request.OrderCreateRequest;
-import com.fashion_store.dto.request.OrderUpdateRequest;
-import com.fashion_store.dto.response.OrderResponse;
+import com.fashion_store.dto.customer.request.CustomerCreateRequest;
+import com.fashion_store.dto.order.request.OrderCreateRequest;
+import com.fashion_store.dto.order.request.OrderUpdateRequest;
+import com.fashion_store.dto.order.response.OrderResponse;
 import com.fashion_store.entity.*;
 import com.fashion_store.enums.AuthProvider;
 import com.fashion_store.enums.DiscountType;

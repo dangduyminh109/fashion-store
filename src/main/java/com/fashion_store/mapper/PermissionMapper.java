@@ -1,6 +1,6 @@
 package com.fashion_store.mapper;
 
-import com.fashion_store.dto.response.PermissionResponse;
+import com.fashion_store.dto.role.resonse.PermissionResponse;
 import com.fashion_store.entity.Permission;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;

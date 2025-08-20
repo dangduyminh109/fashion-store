@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
-import com.fashion_store.dto.request.VoucherRequest;
-import com.fashion_store.dto.request.VoucherUpdateRequest;
-import com.fashion_store.dto.response.VoucherResponse;
+import com.fashion_store.dto.voucher.request.VoucherRequest;
+import com.fashion_store.dto.voucher.request.VoucherUpdateRequest;
+import com.fashion_store.dto.voucher.response.VoucherResponse;
 import com.fashion_store.entity.Voucher;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;

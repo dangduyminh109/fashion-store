@@ -1,8 +1,8 @@
 package com.fashion_store.service;
 
-import com.fashion_store.dto.request.ImportReceiptRequest;
-import com.fashion_store.dto.request.ImportReceiptUpdateRequest;
-import com.fashion_store.dto.response.ImportReceiptResponse;
+import com.fashion_store.dto.importReceipt.request.ImportReceiptRequest;
+import com.fashion_store.dto.importReceipt.request.ImportReceiptUpdateRequest;
+import com.fashion_store.dto.importReceipt.response.ImportReceiptResponse;
 import com.fashion_store.entity.*;
 import com.fashion_store.exception.AppException;
 import com.fashion_store.exception.ErrorCode;

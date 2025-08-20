@@ -1,9 +1,9 @@
 package com.fashion_store.service;
 
-import com.fashion_store.dto.request.RoleRequest;
-import com.fashion_store.dto.request.UpdateRolePermissionsRequest;
-import com.fashion_store.dto.response.PermissionResponse;
-import com.fashion_store.dto.response.RoleResponse;
+import com.fashion_store.dto.role.request.RoleRequest;
+import com.fashion_store.dto.role.request.UpdateRolePermissionsRequest;
+import com.fashion_store.dto.role.resonse.PermissionResponse;
+import com.fashion_store.dto.role.resonse.RoleResponse;
 import com.fashion_store.entity.Permission;
 import com.fashion_store.entity.Role;
 import com.fashion_store.exception.AppException;

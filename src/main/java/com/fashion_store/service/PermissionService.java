@@ -1,6 +1,6 @@
 package com.fashion_store.service;
 
-import com.fashion_store.dto.response.PermissionResponse;
+import com.fashion_store.dto.role.resonse.PermissionResponse;
 import com.fashion_store.mapper.PermissionMapper;
 import com.fashion_store.repository.PermissionRepository;
 import lombok.AccessLevel;

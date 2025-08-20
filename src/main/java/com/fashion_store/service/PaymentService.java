@@ -1,7 +1,7 @@
 package com.fashion_store.service;
 
 import com.fashion_store.Utils.SecurityUtils;
-import com.fashion_store.dto.request.OrderCreateRequest;
+import com.fashion_store.dto.order.request.OrderCreateRequest;
 import com.fashion_store.entity.Order;
 import com.fashion_store.enums.AuthProvider;
 import com.fashion_store.exception.AppException;
